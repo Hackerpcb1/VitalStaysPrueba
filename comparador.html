@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Apartamentos - Vital Stays</title>
+    <meta name="theme-color" content="#1a237e">
+    <link rel="icon" href="images/VitalStays.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="background: var(--color-light-gray);">
+    <header>
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html" class="logo" aria-label="Vital Stays Home">
+                <img src="images/VitalStays.jpeg" alt="Vital Stays Logo" class="logo-img"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'">
+                <svg class="logo-fallback" width="32" height="32" viewBox="0 0 32 32" fill="none"
+                    xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+                    <path d="M16 2L4 10V28H12V20H20V28H28V10L16 2Z" fill="#1a237e" />
+                </svg>
+            </a>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <ul id="navMenu" role="menubar">
+                <li role="none"><a href="index.html" role="menuitem">Inicio</a></li>
+                <li role="none"><a href="listings.html" role="menuitem">Listados</a></li>
+                <li role="none"><a href="owner-request.html" role="menuitem">Publica tu apartamento</a></li>
+                <li role="none"><a href="dashboard.html" role="menuitem">Dashboard</a></li>
+                <li role="none"><a href="contacto.html" role="menuitem">Contacto</a></li>
+                <li role="none">
+                    <a href="#" class="user-menu-btn" id="userMenuBtn" role="menuitem">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Cuenta</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-header">
+                <h1>Comparador de Apartamentos</h1>
+                <p>Selecciona hasta 3 propiedades para compararlas lado a lado y descarga tu resumen.</p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem;">
+                <button id="downloadPdfBtn" class="btn btn-primary">
+                    📄 Descargar Comparación en PDF
+                </button>
+            </div>
+
+            <div class="compare-container" id="compare-table-container">
+                <!-- La tabla de comparación se renderizará por JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Vital Stays</h3>
+                <p>Tu hogar perfecto te está esperando.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="listings.html">Listados</a></li>
+                    <li><a href="comparador.html">Comparador</a></li>
+                    <li><a href="calculadora.html">Calculadora de Costos</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Vital Stays. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="api/config.js"></script>
+    <script src="supabase-api.js"></script>
+    <script src="comparador.js"></script>
+</body>
+</html>

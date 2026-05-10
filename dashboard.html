@@ -1,0 +1,3396 @@
+﻿﻿<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Vital Stays</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#1a237e">
+    <link rel="icon" href="images/VitalStays.jpeg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+<!-- ============================================================ LOGIN SCREEN -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="images/VitalStays.jpeg" alt="Vital Stays" onerror="this.style.display='none'">
+            <h2>Panel de Administración</h2>
+            <p>Vital Stays — Acceso restringido</p>
+        </div>
+        <form id="loginFormEl" class="login-form">
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="loginEmail" placeholder="admin@vitalstays.com" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+            </div>
+            <div id="loginError" class="login-error">Correo o contraseña incorrectos.</div>
+            <button type="submit" class="btn-login">Iniciar Sesión</button>
+            <a href="index.html" class="btn-back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Volver al sitio web
+            </a>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ ADMIN LAYOUT -->
+<div id="adminLayout" class="admin-layout">
+
+    <!-- Sidebar overlay mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-logo">
+            <img src="images/VitalStays.jpeg" alt="VS" onerror="this.style.display='none'">
+            <div>
+                <div class="sidebar-logo-text">Vital Stays</div>
+                <div class="sidebar-logo-sub">Admin Panel</div>
+            </div>
+        </a>
+
+        <div class="sidebar-scroll">
+            <div class="sidebar-section-label">Principal</div>
+
+            <button class="sidebar-item active" data-section="resumen">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Resumen General
+            </button>
+
+            <button class="sidebar-item" data-section="estadisticas">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Estadísticas
+            </button>
+
+            <div class="sidebar-section-label" style="margin-top:1rem;">Propiedades</div>
+
+            <button class="sidebar-item" data-section="solicitudes">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Solicitudes
+                <span class="sidebar-badge red" id="sidebarSolicitudesBadge">0</span>
+            </button>
+
+            <button class="sidebar-item" data-section="apartamentos">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Apartamentos
+            </button>
+
+            <button class="sidebar-item" data-section="pendientes">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Pendientes
+                <span class="sidebar-badge yellow" id="sidebarPendientesBadge">0</span>
+            </button>
+
+            <button class="sidebar-item" data-section="destacados">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Destacados
+            </button>
+
+            <div class="sidebar-section-label" style="margin-top:1rem;">Personas</div>
+
+            <button class="sidebar-item" data-section="usuarios">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Usuarios
+            </button>
+
+            <button class="sidebar-item" data-section="propietarios">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Propietarios
+            </button>
+
+            <button class="sidebar-item" data-section="reservas">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                Reservas / Contactos
+                <span class="sidebar-badge" id="sidebarReservasBadge">0</span>
+            </button>
+
+            <div class="sidebar-section-label" style="margin-top:1rem;">Finanzas & Reportes</div>
+
+            <button class="sidebar-item" data-section="finanzas" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Finanzas / Ingresos
+            </button>
+
+            <button class="sidebar-item" data-section="reportes" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Reportes
+            </button>
+
+            <div class="sidebar-section-label" style="margin-top:1rem;">Herramientas</div>
+
+            <button class="sidebar-item" data-section="calendario">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Calendario
+            </button>
+
+            <button class="sidebar-item" data-section="resenas">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Reseñas y Calificaciones
+            </button>
+
+            <div class="sidebar-section-label" style="margin-top:1rem;">Configuración</div>
+
+            <button class="sidebar-item" data-section="contenido">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                FAQ / Contenido
+            </button>
+
+            <button class="sidebar-item" data-section="configuracion" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Configuración
+            </button>
+
+            <button class="sidebar-item" data-section="seguridad" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Seguridad
+            </button>
+
+            <button class="sidebar-item" data-section="admins" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                Administradores
+            </button>
+
+            <button class="sidebar-item" data-section="logs" data-owner-only="true">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+                Logs de Actividad
+            </button>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="sidebar-user-avatar" id="sidebarAvatarText">A</div>
+                <div>
+                    <div class="sidebar-user-name" id="sidebarUserName">Admin</div>
+                    <div class="sidebar-user-role" id="sidebarUserEmail">admin@vitalstays.com</div>
+                </div>
+                <span class="sidebar-role-badge" id="sidebarRoleBadge">Admin</span>
+            </div>
+            <button class="sidebar-item" id="sidebarLogoutBtn" style="padding: 0.5rem 0; color: rgba(255,100,100,0.85);">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <button class="topbar-menu-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+
+            <div class="topbar-search">
+                <svg class="topbar-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="globalSearch" placeholder="Buscar..." oninput="handleGlobalSearch(this.value)">
+            </div>
+
+            <div class="topbar-actions">
+                <button class="topbar-btn" title="Ir al sitio web" onclick="window.open('index.html','_blank')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+
+                <button class="topbar-btn" title="Modo oscuro" id="themeSwitchBtn" onclick="toggleTheme()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+
+                <button class="topbar-btn" title="Notificaciones" id="notifBtn" onclick="toggleNotifPanel()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="topbar-notif-dot"></span>
+                </button>
+
+                <div class="topbar-user" onclick="navigateTo('configuracion')">
+                    <div class="topbar-avatar" id="topbarAvatarText">A</div>
+                    <div class="topbar-user-info">
+                        <div class="topbar-user-name" id="topbarUserName">Administrador</div>
+                        <div class="topbar-user-role" id="topbarUserRole">Admin</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Notifications Panel -->
+        <div class="notif-panel" id="notifPanel">
+            <div class="card-header">
+                <span class="card-title">Notificaciones</span>
+                <button class="btn btn-sm btn-secondary" onclick="markAllNotifRead()">Marcar leídas</button>
+            </div>
+            <div class="notif-item unread">
+                <div class="notif-dot"></div>
+                <div>
+                    <div class="notif-text">Nueva solicitud de propietario: <strong>Juan Pérez</strong></div>
+                    <div class="notif-time">Hace 15 minutos</div>
+                </div>
+            </div>
+            <div class="notif-item unread">
+                <div class="notif-dot"></div>
+                <div>
+                    <div class="notif-text">Apartamento <strong>#A-12</strong> fue contactado 3 veces hoy</div>
+                    <div class="notif-time">Hace 1 hora</div>
+                </div>
+            </div>
+            <div class="notif-item">
+                <div class="notif-dot" style="background:var(--text-muted)"></div>
+                <div>
+                    <div class="notif-text">Reseña nueva con calificación 2⭐</div>
+                    <div class="notif-time">Hace 3 horas</div>
+                </div>
+            </div>
+            <div class="notif-item">
+                <div class="notif-dot" style="background:var(--text-muted)"></div>
+                <div>
+                    <div class="notif-text">Pago pendiente del propietario <strong>Carlos López</strong></div>
+                    <div class="notif-time">Ayer</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <!-- ======================================================== RESUMEN -->
+            <div id="section-resumen" class="section-page active">
+                <div class="page-header">
+                    <div>
+                        <h1>📊 Resumen General</h1>
+                        <p>Bienvenido al panel de Vital Stays. Aquí tienes una vista global.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" onclick="navigateTo('apartamentos')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                            Agregar apartamento
+                        </button>
+                        <button class="btn btn-primary" onclick="openAptModal()">+ Nuevo Apartamento</button>
+                    </div>
+                </div>
+
+                <!-- Stat Cards Row 1 -->
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-header">
+                            <span class="stat-label">Total Apartamentos</span>
+                            <div class="stat-icon-wrap">🏠</div>
+                        </div>
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-header">
+                            <span class="stat-label">Activos</span>
+                            <div class="stat-icon-wrap">✅</div>
+                        </div>
+                        <div class="stat-value" id="statActivos">0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-header">
+                            <span class="stat-label">Pendientes</span>
+                            <div class="stat-icon-wrap">⏳</div>
+                        </div>
+                        <div class="stat-value" id="statPendientes">0</div>
+                        <div class="stat-change down">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card teal">
+                        <div class="stat-header">
+                            <span class="stat-label">Solicitudes Nuevas</span>
+                            <div class="stat-icon-wrap">📋</div>
+                        </div>
+                        <div class="stat-value" id="statSolicitudes">0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card green" id="cardIngresos">
+                        <div class="stat-header">
+                            <span class="stat-label">Ingresos del Mes</span>
+                            <div class="stat-icon-wrap">💰</div>
+                        </div>
+                        <div class="stat-value" id="statIngresos">$0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-header">
+                            <span class="stat-label">Usuarios Registrados</span>
+                            <div class="stat-icon-wrap">👥</div>
+                        </div>
+                        <div class="stat-value" id="statUsuarios">0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card pink">
+                        <div class="stat-header">
+                            <span class="stat-label">Calificación Promedio</span>
+                            <div class="stat-icon-wrap">⭐</div>
+                        </div>
+                        <div class="stat-value" id="statCalif">0.0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                    <div class="stat-card indigo">
+                        <div class="stat-header">
+                            <span class="stat-label">Contactos Generados</span>
+                            <div class="stat-icon-wrap">📨</div>
+                        </div>
+                        <div class="stat-value" id="statContactos">0</div>
+                        <div class="stat-change up">Actualizado desde la base de datos</div>
+                    </div>
+                </div>
+
+                <!-- Charts + Activity -->
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Apartamentos por Ciudad</span>
+                            <span class="badge badge-primary">Dato en vivo</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="bar-chart" id="barCiudad">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:1rem;">
+                        <!-- Alertas -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">🚨 Alertas</span>
+                            </div>
+                            <div class="card-body" style="padding-top:0.75rem;">
+                                <div class="alert-item warning">⚠️ <span>3 solicitudes llevan más de 48h sin revisar</span></div>
+                                <div class="alert-item danger">🔴 <span>2 apartamentos sin imágenes publicadas</span></div>
+                                <div class="alert-item info">ℹ️ <span>Pago pendiente de 1 propietario</span></div>
+                                <div class="alert-item success">✅ <span>Sistema funcionando correctamente</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">⚡ Acciones Rápidas</span></div>
+                            <div class="card-body">
+                                <div class="quick-actions">
+                                    <button class="quick-action-btn" onclick="openAptModal()">
+                                        <span class="quick-action-icon">🏠</span> Agregar Apt.
+                                    </button>
+                                    <button class="quick-action-btn" onclick="navigateTo('solicitudes')">
+                                        <span class="quick-action-icon">📋</span> Ver Solicitudes
+                                    </button>
+                                    <button class="quick-action-btn" onclick="exportarReporte()">
+                                        <span class="quick-action-icon">📤</span> Exportar
+                                    </button>
+                                    <button class="quick-action-btn" onclick="window.open('index.html','_blank')">
+                                        <span class="quick-action-icon">🌐</span> Ver Sitio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid" style="margin-top:1rem;">
+                    <!-- Actividad Reciente -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Actividad Reciente</span>
+                            <button class="btn btn-sm btn-secondary" onclick="navigateTo('logs')">Ver todo</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-list" id="activityList">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tareas rápidas -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">📝 Tareas Pendientes</span>
+                            <button class="btn btn-sm btn-primary" onclick="addTodo()">+ Nueva</button>
+                        </div>
+                        <div class="card-body" id="todoList">
+                            <!-- populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More Stats -->
+                <div class="dashboard-grid-3" style="margin-top:1rem;">
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Tipos de Propiedad</span></div>
+                        <div class="card-body">
+                            <div class="bar-chart" id="barTipos"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Tasa de Aprobación</span></div>
+                        <div class="card-body" style="text-align:center; padding:1.5rem;">
+                            <div id="approvalRateValue" style="font-size:3rem;font-weight:800;color:var(--success);">0%</div>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem;">Solicitudes aprobadas vs rechazadas</div>
+                            <div style="margin-top:1rem; display:flex; gap:0.75rem; justify-content:center;">
+                                <div><span class="badge badge-success" id="approvalApprovedBadge">✓ 0 Aprobadas</span></div>
+                                <div><span class="badge badge-danger" id="approvalRejectedBadge">✗ 0 Rechazadas</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Precio Promedio</span></div>
+                        <div class="card-body" style="text-align:center; padding:1.5rem;">
+                            <div id="averagePriceValue" style="font-size:2.5rem;font-weight:800;color:var(--primary);">$0</div>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem;">Por mes / renta promedio</div>
+                            <div id="averagePriceRanges" style="margin-top:1rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== ESTADÍSTICAS -->
+            <div id="section-estadisticas" class="section-page">
+                <div class="page-header">
+                    <div><h1>📈 Estadísticas Avanzadas</h1><p>Análisis detallado del rendimiento de la plataforma.</p></div>
+                    <div class="page-actions">
+                        <select class="filter-select" onchange="updateStats(this.value)">
+                            <option value="month">Este mes</option>
+                            <option value="quarter">Este trimestre</option>
+                            <option value="year">Este año</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="exportarReporte()">📤 Exportar</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+                    <div class="stat-card blue"><div class="stat-header"><span class="stat-label">Visitas Totales</span><div class="stat-icon-wrap">👁️</div></div><div class="stat-value" id="statVisitasEst">0</div><div class="stat-change up">Dato real</div></div>
+                    <div class="stat-card teal"><div class="stat-header"><span class="stat-label">Consultas</span><div class="stat-icon-wrap">🔍</div></div><div class="stat-value" id="statConsultasEst">0</div><div class="stat-change up">Dato real</div></div>
+                    <div class="stat-card green"><div class="stat-header"><span class="stat-label">Conversión</span><div class="stat-icon-wrap">📊</div></div><div class="stat-value" id="statConvEst">0%</div><div class="stat-change up">Dato real</div></div>
+                    <div class="stat-card purple"><div class="stat-header"><span class="stat-label">Propietarios</span><div class="stat-icon-wrap">🏢</div></div><div class="stat-value" id="statOwnersEst">0</div><div class="stat-change up">Dato real</div></div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Apartamentos por Ciudad</span></div>
+                        <div class="card-body">
+                            <div class="bar-chart" id="statBarCiudad" style="gap:0.8rem;"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><span class="card-title">Estadísticas por Tipo</span></div>
+                        <div class="card-body">
+                            <div class="bar-chart" id="statBarTipos" style="gap:0.8rem;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:1rem;">
+                    <div class="card-header">
+                        <span class="card-title">Resumen Mensual</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mes</th><th>Apartamentos</th><th>Solicitudes</th><th>Aprobadas</th><th>Rechazadas</th><th>Contactos</th><th>Ingresos Est.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== SOLICITUDES -->
+            <div id="section-solicitudes" class="section-page">
+                <div class="page-header">
+                    <div><h1>📋 Solicitudes de Propietarios</h1><p>Personas que desean publicar en Vital Stays.</p></div>
+                    <button class="btn btn-secondary" onclick="loadRequests()">🔄 Actualizar</button>
+                </div>
+
+                <div class="filters-bar">
+                    <input type="text" class="filter-search" placeholder="Buscar por nombre, correo o ciudad..." oninput="filterRequests(this.value)">
+                    <select class="filter-select" onchange="filterRequestsByStatus(this.value)">
+                        <option value="all">Todos los estados</option>
+                        <option value="pending">Pendientes</option>
+                        <option value="approved">Aprobadas</option>
+                        <option value="rejected">Rechazadas</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Todas las ciudades</option>
+                        <option>Madrid</option><option>Barcelona</option><option>Valencia</option><option>Sevilla</option>
+                    </select>
+                </div>
+
+                <div id="requestsList"></div>
+            </div>
+
+            <!-- ======================================================== APARTAMENTOS -->
+            <div id="section-apartamentos" class="section-page">
+                <div class="page-header">
+                    <div><h1>🏠 Gestión de Apartamentos</h1><p>Crea, edita y administra todas las propiedades.</p></div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" onclick="loadApartments()">🔄 Actualizar</button>
+                        <button class="btn btn-primary" onclick="openAptModal()">+ Agregar Apartamento</button>
+                    </div>
+                </div>
+
+                <div class="filters-bar">
+                    <input type="text" class="filter-search" placeholder="Buscar por nombre, ubicación..." oninput="filterApartments(this.value)">
+                    <select class="filter-select" onchange="filterAptByStatus(this.value)">
+                        <option value="all">Todos los estados</option>
+                        <option value="active">Activos</option>
+                        <option value="pending">Pendientes</option>
+                        <option value="paused">Pausados</option>
+                        <option value="rejected">Rechazados</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Todas las ciudades</option>
+                        <option>Madrid</option><option>Barcelona</option><option>Valencia</option><option>Sevilla</option>
+                    </select>
+                    <select class="filter-select">
+                        <option value="">Todo precio</option>
+                        <option value="0-600">$0 - $600</option>
+                        <option value="600-1000">$600 - $1,000</option>
+                        <option value="1000+">$1,000+</option>
+                    </select>
+                </div>
+
+                <div class="apt-grid" id="aptGrid"></div>
+            </div>
+
+            <!-- ======================================================== PENDIENTES -->
+            <div id="section-pendientes" class="section-page">
+                <div class="page-header">
+                    <div><h1>⏳ Solicitudes Pendientes</h1><p>Nuevas solicitudes de propietarios esperando revisión.</p></div>
+                </div>
+                <div id="pendientesRequestsList"></div>
+            </div>
+
+            <!-- ======================================================== DESTACADOS -->
+            <div id="section-destacados" class="section-page">
+                <div class="page-header">
+                    <div><h1>⭐ Apartamentos Destacados</h1><p>Propiedades marcadas como destacadas en el sitio público.</p></div>
+                </div>
+                <div class="apt-grid" id="destacadosGrid"></div>
+            </div>
+
+            <!-- ======================================================== USUARIOS -->
+            <div id="section-usuarios" class="section-page">
+                <div class="page-header">
+                    <div><h1>👥 Usuarios Registrados</h1><p>Gestión de todos los usuarios de la plataforma.</p></div>
+                    <button class="btn btn-secondary">📤 Exportar CSV</button>
+                </div>
+                <div class="filters-bar">
+                    <input type="text" class="filter-search" placeholder="Buscar usuario..." oninput="filterUsers(this.value)">
+                    <select class="filter-select"><option>Todos</option><option>Activos</option><option>Bloqueados</option></select>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Usuario</th><th>Email</th><th>Registrado</th><th>Apartamentos vistos</th><th>Estado</th><th>Acciones</th></tr>
+                            </thead>
+                            <tbody id="usersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== PROPIETARIOS -->
+            <div id="section-propietarios" class="section-page">
+                <div class="page-header">
+                    <div><h1>🏢 Propietarios</h1><p>Personas con apartamentos publicados en Vital Stays.</p></div>
+                    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="addReviewRow()">+ Añadir reseña</button>
+                        <button class="btn btn-secondary">📤 Exportar</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Propietario</th><th>Contacto</th><th>Apartamentos</th><th>Estado Pago</th><th>Desde</th><th>Acciones</th></tr>
+                            </thead>
+                            <tbody id="ownersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== RESERVAS -->
+            <div id="section-reservas" class="section-page">
+                <div class="page-header">
+                    <div><h1>📬 Reservas / Contactos</h1><p>Solicitudes de contacto enviadas por interesados.</p></div>
+                    <button class="btn btn-secondary">📤 Exportar</button>
+                </div>
+                <div class="filters-bar">
+                    <input type="text" class="filter-search" placeholder="Buscar contacto...">
+                    <select class="filter-select"><option>Todos</option><option>Nuevos</option><option>Respondidos</option><option>Cerrados</option></select>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Interesado</th><th>Email</th><th>Apartamento</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
+                            </thead>
+                            <tbody id="bookingsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== FINANZAS (Owner only) -->
+            <div id="section-finanzas" class="section-page">
+                <div id="finanzasContent">
+                    <div class="page-header">
+                        <div><h1>💰 Finanzas e Ingresos</h1><p>Resumen financiero completo de la plataforma.</p></div>
+                        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                            <button class="btn btn-success" onclick="togglePaymentForm()">+ Nuevo ingreso</button>
+                            <button class="btn btn-primary" onclick="exportarReporte()">📤 Exportar Reporte</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:1rem;">
+                        <div class="card-body" id="paymentFormCard" style="display:none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nombre de quien paga</label>
+                                    <input type="text" id="paymentOwner" placeholder="Ej. Juan Pérez">
+                                </div>
+                                <div class="form-group">
+                                    <label>Apartamento</label>
+                                    <input type="text" id="paymentApartment" placeholder="Ej. Apartamento Centro Madrid">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Concepto</label>
+                                    <input type="text" id="paymentConcept" placeholder="Ej. Renta mensual de mayo">
+                                </div>
+                                <div class="form-group">
+                                    <label>Monto</label>
+                                    <input type="number" id="paymentAmount" min="0" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Fecha de pago</label>
+                                    <input type="date" id="paymentPaidAt">
+                                </div>
+                                <div class="form-group">
+                                    <label>Medio de pago</label>
+                                    <select id="paymentMethod">
+                                        <option value="Transferencia">Transferencia</option>
+                                        <option value="Efectivo">Efectivo</option>
+                                        <option value="Tarjeta">Tarjeta</option>
+                                        <option value="Bizum">Bizum</option>
+                                        <option value="PayPal">PayPal</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Estado</label>
+                                    <select id="paymentStatus">
+                                        <option value="paid">Pagado</option>
+                                        <option value="pending">Pendiente</option>
+                                        <option value="failed">Fallido</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                                <button class="btn btn-success" onclick="savePaymentRecord()">💾 Guardar ingreso</button>
+                                <button class="btn btn-secondary" onclick="togglePaymentForm(false)">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="finance-summary">
+                        <div class="finance-card">
+                            <div class="finance-label">Ingresos del Mes</div>
+                            <div class="finance-value" id="financeMonthIncome">$0</div>
+                            <div class="finance-sub">Actualizado desde la base de datos</div>
+                        </div>
+                        <div class="finance-card">
+                            <div class="finance-label">Ingresos del Año</div>
+                            <div class="finance-value" id="financeYearIncome">$0</div>
+                            <div class="finance-sub">Actualizado desde la base de datos</div>
+                        </div>
+                        <div class="finance-card">
+                            <div class="finance-label">Total Ganado</div>
+                            <div class="finance-value" id="financeTotalIncome">$0</div>
+                            <div class="finance-sub text-muted">Desde el inicio</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Ingresos Mensuales (2026)</span></div>
+                            <div class="card-body">
+                                <div class="bar-chart" id="finanzasBarMes" style="gap:0.8rem;"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Pagos Pendientes</span></div>
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead><tr><th>Propietario</th><th>Monto</th><th>Vence</th><th>Estado</th></tr></thead>
+                                        <tbody id="pagosTable"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top:1rem;">
+                        <div class="card-header"><span class="card-title">Historial de Pagos</span></div>
+                        <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead><tr><th>Fecha</th><th>Persona</th><th>Concepto</th><th>Monto</th><th>Estado</th><th>Recibo</th></tr></thead>
+                                        <tbody id="historialTable"></tbody>
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== REPORTES (Owner only) -->
+            <div id="section-reportes" class="section-page">
+                <div id="reportesContent">
+                    <div class="page-header">
+                        <div><h1>📄 Reportes</h1><p>Genera y exporta reportes del sistema.</p></div>
+                    </div>
+
+                    <div class="dashboard-grid-3">
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Reporte de Apartamentos</span></div>
+                            <div class="card-body">
+                                <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:1rem;">Listado completo con estadísticas de cada propiedad.</p>
+                                <div class="form-group"><label>Período</label><select class="filter-select" style="width:100%"><option>Mes actual</option><option>Trimestre</option><option>Año</option></select></div>
+                                <button class="btn btn-primary" style="width:100%" onclick="exportarReporte()">📤 Descargar CSV</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Reporte de Usuarios</span></div>
+                            <div class="card-body">
+                                <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:1rem;">Usuarios registrados con historial de actividad.</p>
+                                <div class="form-group"><label>Estado</label><select class="filter-select" style="width:100%"><option>Todos</option><option>Activos</option><option>Inactivos</option></select></div>
+                                <button class="btn btn-primary" style="width:100%" onclick="exportarReporte()">📤 Descargar CSV</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Reporte Financiero</span></div>
+                            <div class="card-body">
+                                <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:1rem;">Ingresos, pagos y proyecciones financieras.</p>
+                                <div class="form-group"><label>Formato</label><select class="filter-select" style="width:100%"><option>CSV</option><option>PDF</option></select></div>
+                                <button class="btn btn-primary" style="width:100%" onclick="exportarReporte()">📤 Descargar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== CALENDARIO -->
+            <div id="section-calendario" class="section-page">
+                <div class="page-header">
+                    <div><h1>📅 Calendario</h1><p>Vista mensual de eventos, reservas y tareas.</p></div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" onclick="openCalendarEventForm()">+ Añadir evento</button>
+                        <button class="btn btn-secondary" onclick="prevMonth()">← Anterior</button>
+                        <span id="calMonthLabel" style="font-weight:700;font-size:0.95rem;align-self:center;"></span>
+                        <button class="btn btn-secondary" onclick="nextMonth()">Siguiente →</button>
+                    </div>
+                </div>
+                <div class="card" style="margin-bottom:1rem;">
+                    <div class="card-body" id="calendarEventForm" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Título del evento</label>
+                                <input type="text" id="calendarEventTitle" placeholder="Ej. Visita, reserva, reunión">
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" id="calendarEventDate">
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                            <button class="btn btn-success" onclick="saveCalendarEvent()">💾 Guardar evento</button>
+                            <button class="btn btn-secondary" onclick="closeCalendarEventForm()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="calendar-grid" id="calendarHeader"></div>
+                        <div class="calendar-grid" id="calendarGrid" style="margin-top:0.5rem;"></div>
+                        <div id="calendarEventsList" style="margin-top:1rem;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== RESEÑAS -->
+            <div id="section-resenas" class="section-page">
+                <div class="page-header">
+                    <div><h1>⭐ Reseñas y Calificaciones</h1><p>Opiniones de usuarios sobre los apartamentos.</p></div>
+                    <button class="btn btn-secondary">📤 Exportar</button>
+                </div>
+                <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+                    <div class="stat-card green"><div class="stat-header"><span class="stat-label">Calificación Promedio</span><div class="stat-icon-wrap">⭐</div></div><div class="stat-value" id="reviewAvgStat">0.0</div><div class="stat-change up">Promedio real</div></div>
+                    <div class="stat-card blue"><div class="stat-header"><span class="stat-label">Total Reseñas</span><div class="stat-icon-wrap">📝</div></div><div class="stat-value" id="reviewTotalStat">0</div><div class="stat-change up">Recibidas</div></div>
+                    <div class="stat-card orange"><div class="stat-header"><span class="stat-label">Reseñas 1-3 ⭐</span><div class="stat-icon-wrap">⚠️</div></div><div class="stat-value" id="reviewLowStat">0</div><div class="stat-change down">Requieren atención</div></div>
+                    <div class="stat-card teal"><div class="stat-header"><span class="stat-label">Respondidas</span><div class="stat-icon-wrap">✉️</div></div><div class="stat-value" id="reviewRepliedStat">0%</div><div class="stat-change up">Tasa de respuesta</div></div>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>Usuario</th><th>Ubicación</th><th>Apartamento</th><th>Calificación</th><th>Comentario</th><th>Respuesta</th><th>Estado</th><th>Acciones</th></tr></thead>
+                            <tbody id="resenasTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== CONTENIDO -->
+            <div id="section-contenido" class="section-page">
+                <div class="page-header">
+                    <div><h1>✏️ FAQ / Contenido del Sitio</h1><p>Edita el contenido visible en el sitio público.</p></div>
+                    <button class="btn btn-primary" onclick="guardarContenido()">💾 Guardar Cambios</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Hero del Sitio</span></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Título principal</label><input type="text" data-key="hero_title" placeholder="Cargando..."></div>
+                                <div class="form-group"><label>Subtítulo</label><textarea data-key="hero_subtitle" style="min-height:70px" placeholder="Cargando..."></textarea></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Estadísticas Públicas</span></div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group"><label>Apartamentos</label><input type="text" data-key="stat_apartments"></div>
+                                    <div class="form-group"><label>Clientes</label><input type="text" data-key="stat_clients"></div>
+                                    <div class="form-group"><label>Ciudades</label><input type="text" data-key="stat_cities"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Información de Contacto</span></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Email</label><input type="email" data-key="contact_email"></div>
+                                <div class="form-group"><label>Teléfono</label><input type="tel" data-key="contact_phone"></div>
+                                <div class="form-group"><label>Dirección</label><input type="text" data-key="contact_address"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">Preguntas Frecuentes</span>
+                                <button class="btn btn-sm btn-primary" onclick="addFAQ()">+ Añadir</button>
+                            </div>
+                            <div class="card-body" id="faqList">
+                                <!-- populated by JS -->
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Redes Sociales</span></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Facebook</label><input type="url" data-key="social_facebook"></div>
+                                <div class="form-group"><label>Instagram</label><input type="url" data-key="social_instagram"></div>
+                                <div class="form-group"><label>LinkedIn</label><input type="url" data-key="social_linkedin"></div>
+                                <div class="form-group"><label>Twitter/X</label><input type="url" data-key="social_twitter"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== CONFIGURACIÓN (Owner only) -->
+            <div id="section-configuracion" class="section-page">
+                <div id="configuracionContent">
+                    <div class="page-header">
+                        <div><h1>⚙️ Configuración Global</h1><p>Ajustes avanzados del sistema Vital Stays.</p></div>
+                        <button class="btn btn-primary" onclick="guardarConfiguracion()">💾 Guardar</button>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div style="display:flex;flex-direction:column;gap:1rem;">
+                            <div class="card">
+                                <div class="card-header"><span class="card-title">Apariencia</span></div>
+                                <div class="card-body">
+                                    <div class="settings-section">
+                                        <div class="form-group">
+                                            <label>Tema del panel</label>
+                                            <select id="settingsTheme" onchange="applyTheme(this.value)">
+                                                <option value="light">Claro</option>
+                                                <option value="dark">Oscuro</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Idioma</label>
+                                            <select>
+                                                <option value="es">Español</option>
+                                                <option value="en">English</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header"><span class="card-title">Información del Administrador</span></div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group"><label>Nombre</label><input type="text" id="settingsName" placeholder="Nombre completo"></div>
+                                        <div class="form-group"><label>Email</label><input type="email" id="settingsEmail" placeholder="email@vitalstays.com"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group"><label>Teléfono</label><input type="tel" placeholder="+34 600 000 000"></div>
+                                        <div class="form-group"><label>Empresa</label><input type="text" value="Vital Stays"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:1rem;">
+                            <div class="card">
+                                <div class="card-header"><span class="card-title">Permisos de Admin</span></div>
+                                <div class="card-body">
+                                    <div class="settings-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                        <div class="checkbox-row"><input type="checkbox" id="p_resumen" data-key="perm_resumen" checked><label for="p_resumen">Resumen General</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_stats" data-key="perm_estadisticas" checked><label for="p_stats">Estadísticas</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_reqs" data-key="perm_solicitudes" checked><label for="p_reqs">Solicitudes</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_apts" data-key="perm_apartamentos" checked><label for="p_apts">Apartamentos</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_pend" data-key="perm_pendientes" checked><label for="p_pend">Pendientes</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_dest" data-key="perm_destacados" checked><label for="p_dest">Destacados</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_user" data-key="perm_usuarios" checked><label for="p_user">Usuarios</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_prop" data-key="perm_propietarios" checked><label for="p_prop">Propietarios</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_resv" data-key="perm_reservas" checked><label for="p_resv">Reservas / Contactos</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_fin" data-key="perm_finanzas"><label for="p_fin">Finanzas / Ingresos</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_rep" data-key="perm_reportes"><label for="p_rep">Reportes</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_cal" data-key="perm_calendario" checked><label for="p_cal">Calendario</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_rev" data-key="perm_resenas" checked><label for="p_rev">Reseñas y Calificaciones</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_cont" data-key="perm_contenido" checked><label for="p_cont">FAQ / Contenido</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_conf" data-key="perm_configuracion"><label for="p_conf">Configuración</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_seg" data-key="perm_seguridad"><label for="p_seg">Seguridad</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_adm" data-key="perm_admins"><label for="p_adm">Administradores</label></div>
+                                        <div class="checkbox-row"><input type="checkbox" id="p_log" data-key="perm_logs"><label for="p_log">Logs de Actividad</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== SEGURIDAD (Owner only) -->
+            <div id="section-seguridad" class="section-page">
+                <div id="seguridadContent">
+                    <div class="page-header">
+                        <div><h1>🔒 Seguridad</h1><p>Control de acceso y protección del sistema.</p></div>
+                    </div>
+
+                    <div class="dashboard-grid-3">
+                        <div class="stat-card green"><div class="stat-header"><span class="stat-label">Rol Actual</span><div class="stat-icon-wrap">👑</div></div><div class="stat-value" style="font-size:1.2rem;" id="segRolActual">Dueño</div><div class="stat-change up">Acceso completo</div></div>
+                        <div class="stat-card blue"><div class="stat-header"><span class="stat-label">Último acceso</span><div class="stat-icon-wrap">🕐</div></div><div class="stat-value" style="font-size:1.1rem;">Hoy</div><div class="stat-change up">08/05/2026 – 10:24</div></div>
+                        <div class="stat-card orange"><div class="stat-header"><span class="stat-label">Sesiones activas</span><div class="stat-icon-wrap">📱</div></div><div class="stat-value">1</div><div class="stat-change up">Este dispositivo</div></div>
+                    </div>
+
+                    <div class="dashboard-grid" style="margin-top:1rem;">
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Cambiar Contraseña</span></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Contraseña Actual</label><input type="password" placeholder="••••••••"></div>
+                                <div class="form-group"><label>Nueva Contraseña</label><input type="password" placeholder="••••••••"></div>
+                                <div class="form-group"><label>Confirmar Nueva Contraseña</label><input type="password" placeholder="••••••••"></div>
+                                <button class="btn btn-primary" onclick="alert('Contraseña actualizada. Conectar con Supabase Auth.')">Actualizar Contraseña</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><span class="card-title">Últimos Cambios</span></div>
+                            <div class="card-body">
+                                <div class="activity-list" id="seguridadActivity">
+                                    <!-- populated by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== ADMINS (Owner only) -->
+            <div id="section-admins" class="section-page">
+                <div id="adminsContent">
+                    <div class="page-header">
+                        <div><h1>👨‍💼 Administradores</h1><p>Gestiona el equipo de administración.</p></div>
+                        <button class="btn btn-primary" onclick="openAddAdminModal()">+ Crear Admin</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>Administrador</th><th>Email</th><th>Rol</th><th>Creado</th><th>Estado</th><th>Acciones</th></tr>
+                                </thead>
+                                <tbody id="adminsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== LOGS (Owner only) -->
+            <div id="section-logs" class="section-page">
+                <div id="logsContent">
+                    <div class="page-header">
+                        <div><h1>📋 Logs de Actividad</h1><p>Registro completo de todas las acciones del sistema.</p></div>
+                        <div class="page-actions">
+                            <select class="filter-select"><option>Todas las acciones</option><option>Login</option><option>Edición</option><option>Eliminación</option><option>Aprobación</option></select>
+                            <button class="btn btn-secondary">📤 Exportar</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="logs-list" id="logsList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- ============================================================ MODAL: Apartamento -->
+<div class="modal-overlay" id="aptModalOverlay">
+    <div class="modal-box wide">
+        <div class="modal-head">
+            <h3 id="aptModalTitle">Agregar Apartamento</h3>
+            <button class="modal-close" onclick="closeAptModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <form id="aptForm" onsubmit="saveApartment(event)">
+                <input type="hidden" id="aptId">
+                <div class="form-row">
+                    <div class="form-group"><label>Título / Nombre</label><input type="text" id="aptTitle" required placeholder="Ej: Apartamento Centro Madrid"></div>
+                    <div class="form-group"><label>Ciudad / Ubicación</label><input type="text" id="aptLocation" required placeholder="Madrid, España"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Precio mensual ($)</label><input type="number" id="aptPrice" required min="0" placeholder="850"></div>
+                    <div class="form-group"><label>Habitaciones</label><input type="number" id="aptBedrooms" min="0" placeholder="2"></div>
+                    <div class="form-group"><label>Baños</label><input type="number" id="aptBathrooms" min="0" placeholder="1"></div>
+                    <div class="form-group"><label>Tamaño (m²)</label><input type="number" id="aptSize" min="0" placeholder="65"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="aptStatus">
+                            <option value="active">Activo</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="paused">Pausado</option>
+                            <option value="rejected">Rechazado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Etiqueta</label>
+                        <select id="aptBadge">
+                            <option value="">Ninguna</option>
+                            <option value="Destacado">⭐ Destacado</option>
+                            <option value="Nuevo">🆕 Nuevo</option>
+                            <option value="Verificado">✅ Verificado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group"><label>URL de Imagen Principal</label><input type="url" id="aptImage" placeholder="https://..."><img id="aptImgPreview" class="img-preview" style="display:none;margin-top:0.5rem;"></div>
+                <div class="form-group">
+                    <label>Galería de Imágenes</label>
+                    <input type="file" id="aptGallery" multiple accept="image/*" onchange="previewGallery(this)">
+                    <div id="galleryPreview" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;"></div>
+                </div>
+                <div class="form-group"><label>Descripción</label><textarea id="aptDesc" rows="4" required placeholder="Describe el apartamento..."></textarea></div>
+                <div class="form-row">
+                    <div class="form-group" style="display:flex;align-items:center;gap:0.75rem;padding-top:1.5rem;">
+                        <div class="toggle" id="toggleDestacado" onclick="this.classList.toggle('on')"></div>
+                        <span style="font-size:0.83rem;font-weight:600;">Marcar como Destacado</span>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:0.75rem;padding-top:1.5rem;">
+                        <div class="toggle accent" id="toggleVerificado" onclick="this.classList.toggle('on')"></div>
+                        <span style="font-size:0.83rem;font-weight:600;">Marcar como Verificado</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeAptModal()">Cancelar</button>
+            <button class="btn btn-accent" type="button" onclick="previewApt()">👁 Vista Previa</button>
+            <button class="btn btn-primary" onclick="document.getElementById('aptForm').requestSubmit()">💾 Guardar Apartamento</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ MODAL: Rechazar Solicitud -->
+<div class="modal-overlay" id="rejectModalOverlay">
+    <div class="modal-box" style="max-width:460px;">
+        <div class="modal-head">
+            <h3>Rechazar Solicitud</h3>
+            <button class="modal-close" onclick="closeRejectModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Por favor indica el motivo del rechazo. Este mensaje será registrado.</p>
+            <div class="form-group">
+                <label>Motivo del Rechazo</label>
+                <textarea id="rejectReason" rows="4" placeholder="Ej: La propiedad no cumple con los requisitos mínimos de verificación..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeRejectModal()">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmReject()">Rechazar Solicitud</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ MODAL: Crear Admin -->
+<div class="modal-overlay" id="addAdminModalOverlay">
+    <div class="modal-box" style="max-width:460px;">
+        <div class="modal-head">
+            <h3>Crear Administrador</h3>
+            <button class="modal-close" onclick="document.getElementById('addAdminModalOverlay').classList.remove('open')">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group"><label>Nombre Completo</label><input type="text" id="newAdminName" placeholder="Juan Pérez"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="newAdminEmail" placeholder="juan@vitalstays.com"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Rol</label>
+                    <select id="newAdminRole">
+                        <option value="admin">Admin</option>
+                        <option value="owner">Dueño</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Contraseña temporal</label><input type="password" id="newAdminPass" placeholder="••••••••"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="document.getElementById('addAdminModalOverlay').classList.remove('open')">Cancelar</button>
+            <button class="btn btn-primary" onclick="createAdmin()">Crear Administrador</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ MODAL: Ver Detalle -->
+<div class="modal-overlay" id="detailModalOverlay">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3 id="detailModalTitle">Detalle de Solicitud</h3>
+            <button class="modal-close" onclick="closeDetailModal()">✕</button>
+        </div>
+        <div class="modal-body" id="detailModalBody" style="font-size:0.85rem;">
+            <!-- Populated by JS -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDetailModal()">Cerrar</button>
+            <button class="btn btn-primary" id="detailModalActionBtn">✉️ Responder por Email</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="api/config.js" onerror="console.warn('config.js no encontrado – demo mode activo')"></script>
+<script src="supabase-api.js" onerror="console.warn('supabase-api.js no encontrado – demo mode activo')"></script>
+
+<script>
+/* ============================================================
+   VITAL STAYS ADMIN DASHBOARD – JAVASCRIPT COMPLETO
+   ============================================================ */
+
+// ── STATE ──────────────────────────────────────────────────────
+const STATE = {
+    role: 'owner', // 'owner' | 'admin'  — cambiar según sesión real
+    user: { name: 'Carlos Dueño', email: 'owner@vitalstays.com' },
+    currentSection: 'resumen',
+    theme: localStorage.getItem('vs-theme') || 'light',
+    rejectTargetId: null,
+};
+
+// ── DEMO DATA ──────────────────────────────────────────────────
+// TODO: Reemplazar cada array con llamadas a Supabase tables correspondientes
+
+const DEMO_APARTMENTS = [
+    { id: 1, title: 'Apartamento Centro Madrid', location: 'Madrid, España', price: 950, bedrooms: 2, bathrooms: 1, size: 68, status: 'active', featured: true, verified: true, badge: 'Destacado', image: '', city: 'Madrid', type: 'Apartamento', views: 342 },
+    { id: 2, title: 'Studio Barceloneta', location: 'Barcelona, España', price: 780, bedrooms: 1, bathrooms: 1, size: 42, status: 'active', featured: false, verified: true, badge: '', image: '', city: 'Barcelona', type: 'Studio', views: 215 },
+    { id: 3, title: 'Piso Moderno Valencia', location: 'Valencia, España', price: 650, bedrooms: 2, bathrooms: 2, size: 75, status: 'pending', featured: false, verified: false, badge: 'Nuevo', image: '', city: 'Valencia', type: 'Piso', views: 88 },
+    { id: 4, title: 'Ático Lujo Sevilla', location: 'Sevilla, España', price: 1200, bedrooms: 3, bathrooms: 2, size: 110, status: 'active', featured: true, verified: true, badge: 'Destacado', image: '', city: 'Sevilla', type: 'Ático', views: 520 },
+    { id: 5, title: 'Apartamento Gracia', location: 'Barcelona, España', price: 890, bedrooms: 2, bathrooms: 1, size: 60, status: 'paused', featured: false, verified: true, badge: '', image: '', city: 'Barcelona', type: 'Apartamento', views: 134 },
+    { id: 6, title: 'Estudio Lavapiés', location: 'Madrid, España', price: 580, bedrooms: 1, bathrooms: 1, size: 35, status: 'pending', featured: false, verified: false, badge: '', image: '', city: 'Madrid', type: 'Studio', views: 67 },
+];
+
+const DEMO_REQUESTS = [
+    { id: 1, name: 'Ana Martínez', email: 'ana@email.com', phone: '+34 611 222 333', city: 'Madrid', address: 'Calle Gran Vía 45', price: 900, description: 'Apartamento luminoso cerca del hospital', status: 'pending', date: '2026-05-06', bedrooms: 2, size: 70 },
+    { id: 2, name: 'Juan Pérez', email: 'juan@email.com', phone: '+34 622 333 444', city: 'Barcelona', address: 'Av. Diagonal 200', price: 1100, description: 'Piso moderno, 3 habitaciones, garaje incluido', status: 'pending', date: '2026-05-07', bedrooms: 3, size: 90 },
+    { id: 3, name: 'María López', email: 'maria@email.com', phone: '+34 633 444 555', city: 'Valencia', address: 'Calle Colón 12', price: 700, description: 'Estudio acogedor, ideal para residentes médicos', status: 'approved', date: '2026-05-03', bedrooms: 1, size: 40 },
+    { id: 4, name: 'Carlos Ruiz', email: 'carlos@email.com', phone: '+34 644 555 666', city: 'Sevilla', address: 'Calle Sierpes 8', price: 850, description: 'Piso con terraza, 2 habitaciones, amueblado', status: 'rejected', date: '2026-05-01', bedrooms: 2, size: 65 },
+];
+
+const DEMO_USERS = [
+    { id: 1, name: 'Laura Sánchez', email: 'laura@email.com', registered: '2026-03-15', views: 24, status: 'active' },
+    { id: 2, name: 'Pedro García', email: 'pedro@email.com', registered: '2026-04-02', views: 8, status: 'active' },
+    { id: 3, name: 'Sofia Torres', email: 'sofia@email.com', registered: '2026-04-18', views: 45, status: 'active' },
+    { id: 4, name: 'Andrés Vega', email: 'andres@email.com', registered: '2026-01-20', views: 3, status: 'blocked' },
+];
+
+const DEMO_OWNERS = [
+    { id: 1, name: 'Ana Martínez', email: 'ana@email.com', phone: '+34 611 222 333', apts: 2, payment: 'paid', since: '2025-09-01' },
+    { id: 2, name: 'Carlos Ruiz', email: 'carlos@email.com', phone: '+34 644 555 666', apts: 1, payment: 'pending', since: '2026-01-15' },
+    { id: 3, name: 'María López', email: 'maria@email.com', phone: '+34 633 444 555', apts: 3, payment: 'paid', since: '2025-06-10' },
+];
+
+const DEMO_BOOKINGS = [
+    { id: 1, user: 'Laura Sánchez', email: 'laura@email.com', apt: 'Apartamento Centro Madrid', date: '2026-05-05', status: 'new' },
+    { id: 2, user: 'Pedro García', email: 'pedro@email.com', apt: 'Studio Barceloneta', date: '2026-05-04', status: 'replied' },
+    { id: 3, user: 'Sofia Torres', email: 'sofia@email.com', apt: 'Ático Lujo Sevilla', date: '2026-05-03', status: 'closed' },
+    { id: 4, user: 'Ramón Díaz', email: 'ramon@email.com', apt: 'Piso Moderno Valencia', date: '2026-05-07', status: 'new' },
+    { id: 5, user: 'Elena Castro', email: 'elena@email.com', apt: 'Apartamento Centro Madrid', date: '2026-05-07', status: 'new' },
+];
+
+const DEMO_MESSAGES = [
+    { id: 1, from: 'Miguel Herrera', subject: 'Consulta sobre disponibilidad', date: '2026-05-07', status: 'unread' },
+    { id: 2, from: 'Lucía Morales', subject: 'Error en formulario de solicitud', date: '2026-05-06', status: 'unread' },
+    { id: 3, from: 'Roberto Jiménez', subject: 'Colaboración propietario', date: '2026-05-05', status: 'read' },
+];
+
+const DEMO_REVIEWS = [
+    { id: 1, user: 'Laura Sánchez', apt: 'Apartamento Centro Madrid', rating: 5, comment: 'Excelente ubicación y limpieza.', date: '2026-04-20', status: 'published' },
+    { id: 2, user: 'Pedro García', apt: 'Studio Barceloneta', rating: 4, comment: 'Muy cómodo, el proceso fue rápido.', date: '2026-04-25', status: 'published' },
+    { id: 3, user: 'Andrés Vega', apt: 'Piso Moderno Valencia', rating: 2, comment: 'Descripción no coincide con la realidad.', date: '2026-05-01', status: 'pending' },
+];
+
+const DEMO_ADMINS = [
+    { id: 1, name: 'Carlos Dueño', email: 'owner@vitalstays.com', role: 'owner', created: '2024-01-01', status: 'active' },
+    { id: 2, name: 'Admin Principal', email: 'admin@vitalstays.com', role: 'admin', created: '2025-03-15', status: 'active' },
+    { id: 3, name: 'Ana Admin', email: 'ana.admin@vitalstays.com', role: 'admin', created: '2025-08-20', status: 'active' },
+];
+
+const DEMO_LOGS = [
+    { time: '2026-05-08 10:24', user: 'owner@vitalstays.com', action: 'Inicio de sesión exitoso', severity: 'info' },
+    { time: '2026-05-08 10:26', user: 'owner@vitalstays.com', action: 'Aprobó solicitud de Juan Pérez', severity: 'success' },
+    { time: '2026-05-08 09:45', user: 'admin@vitalstays.com', action: 'Editó apartamento "Studio Barceloneta"', severity: 'info' },
+    { time: '2026-05-07 18:30', user: 'admin@vitalstays.com', action: 'Rechazó solicitud #4 con motivo', severity: 'warning' },
+    { time: '2026-05-07 14:15', user: 'owner@vitalstays.com', action: 'Eliminó apartamento #7', severity: 'danger' },
+    { time: '2026-05-07 11:00', user: 'admin@vitalstays.com', action: 'Inicio de sesión exitoso', severity: 'info' },
+    { time: '2026-05-06 16:45', user: 'owner@vitalstays.com', action: 'Actualizó configuración global', severity: 'warning' },
+    { time: '2026-05-06 10:20', user: 'admin@vitalstays.com', action: 'Agregó apartamento "Estudio Lavapiés"', severity: 'success' },
+];
+
+const DEMO_ACTIVITY = [
+    { text: 'Juan Pérez envió una nueva solicitud de apartamento', time: 'Hace 15 min', color: '#3949ab' },
+    { text: 'Apartamento "Ático Lujo Sevilla" recibió 5 visitas hoy', time: 'Hace 1 hora', color: '#8b1538' },
+    { text: 'Solicitud de Ana Martínez fue aprobada', time: 'Hace 2 horas', color: '#2e7d32' },
+    { text: 'Nueva reseña con calificación 2⭐ requiere atención', time: 'Hace 3 horas', color: '#f57f17' },
+    { text: 'Carlos Ruiz actualizó información de su propiedad', time: 'Hace 5 horas', color: '#6a1b9a' },
+];
+
+const DEMO_TODOS = [
+    { id: 1, text: 'Revisar 3 solicitudes pendientes de más de 48h', priority: 'high', done: false },
+    { id: 2, text: 'Agregar imágenes a 2 apartamentos sin fotos', priority: 'medium', done: false },
+    { id: 3, text: 'Responder mensaje de Miguel Herrera', priority: 'medium', done: false },
+    { id: 4, text: 'Exportar reporte financiero mensual', priority: 'low', done: true },
+    { id: 5, text: 'Actualizar estadísticas del hero del sitio', priority: 'low', done: false },
+];
+
+const DEMO_PAYMENTS_PENDING = [
+    { owner: 'Carlos Ruiz', amount: '$120', due: '2026-05-10', status: 'pending' },
+];
+
+const DEMO_PAYMENT_HISTORY = [
+    { date: '2026-05-01', owner: 'Ana Martínez', concept: 'Publicación mensual – 2 props.', amount: '$240', status: 'paid' },
+    { date: '2026-05-01', owner: 'María López', concept: 'Publicación mensual – 3 props.', amount: '$360', status: 'paid' },
+    { date: '2026-04-01', owner: 'Ana Martínez', concept: 'Publicación mensual – 2 props.', amount: '$240', status: 'paid' },
+    { date: '2026-04-01', owner: 'Carlos Ruiz', concept: 'Publicación mensual – 1 prop.', amount: '$120', status: 'failed' },
+];
+
+// ── LOGIN LOGIC ────────────────────────────────────────────────
+const SUPABASE_DASHBOARD_MODE = Boolean(window.vitalStaysApi && window.vitalStaysApi.isConfigured());
+
+let apartments = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_APARTMENTS].map(a => ({...a, title: a.name || a.title}));
+let requestsData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_REQUESTS];
+let systemLogs = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_LOGS];
+let todos = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_TODOS];
+let usersData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_USERS];
+let ownersData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_OWNERS];
+let bookingsData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_BOOKINGS];
+let messagesData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_MESSAGES];
+let reviewsData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_REVIEWS];
+let faqData = [];
+let adminsData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_ADMINS];
+let paymentsData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_PAYMENT_HISTORY, ...DEMO_PAYMENTS_PENDING];
+let calendarEventsData = [];
+
+function buildOwnersFromSources(dbOwners, ownerRequests) {
+    const ownersMap = new Map();
+
+    (dbOwners || []).forEach(owner => {
+        const key = String(owner.email || owner.name || '').toLowerCase();
+        if (!key) return;
+        ownersMap.set(key, {
+            id: owner.id,
+            name: owner.name || 'Sin nombre',
+            email: owner.email || 'Sin email',
+            phone: owner.phone || '',
+            apts: Number(owner.apts || 0),
+            payment: owner.payment || 'pending',
+            since: owner.since || ''
+        });
+    });
+
+    (ownerRequests || [])
+        .filter(request => request.status === 'approved')
+        .forEach(request => {
+            const key = String(request.email || request.name || '').toLowerCase();
+            if (!key) return;
+
+            const existing = ownersMap.get(key);
+            if (existing) {
+                ownersMap.set(key, {
+                    ...existing,
+                    phone: existing.phone || request.phone || '',
+                    apts: Math.max(Number(existing.apts || 0), 1),
+                    since: existing.since || request.date || ''
+                });
+                return;
+            }
+
+            ownersMap.set(key, {
+                id: request.id,
+                name: request.name || 'Sin nombre',
+                email: request.email || 'Sin email',
+                phone: request.phone || '',
+                apts: 1,
+                payment: 'pending',
+                since: request.date || ''
+            });
+        });
+
+    return Array.from(ownersMap.values());
+}
+
+// Demo credentials - replace with Supabase Auth
+const DEMO_CREDENTIALS = [
+    { email: 'owner@vitalstays.com', password: 'owner123', role: 'owner', name: 'Carlos Dueño' },
+    { email: 'admin@vitalstays.com', password: 'admin123', role: 'admin', name: 'Admin Principal' },
+    // TODO: Autenticar con Supabase Auth: supabase.auth.signInWithPassword({ email, password })
+];
+
+document.getElementById('loginFormEl').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errorEl = document.getElementById('loginError');
+    errorEl.style.display = 'none';
+
+    try {
+        const submitBtn = document.querySelector('.btn-login');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Iniciando...';
+        
+        if (!window.vitalStaysApi || !window.vitalStaysApi.isConfigured()) throw new Error('Falta configuración de Supabase');
+
+        await window.vitalStaysApi.signInAdmin(email, password);
+        STATE.user = { name: email.split('@')[0], email: email };
+        STATE.role = await window.vitalStaysApi.getCurrentAdminRole() || 'admin';
+        await initDashboard();
+    } catch(err) {
+        errorEl.textContent = 'Error: ' + err.message;
+        errorEl.style.display = 'block';
+    } finally {
+        const submitBtn = document.querySelector('.btn-login');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Iniciar Sesión';
+    }
+});
+
+async function initDashboard() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminLayout').classList.add('visible');
+
+    // Apply theme
+    applyTheme(STATE.theme);
+
+    // Set user info
+    const initial = STATE.user.name.charAt(0).toUpperCase();
+    document.getElementById('sidebarAvatarText').textContent = initial;
+    document.getElementById('topbarAvatarText').textContent = initial;
+    document.getElementById('sidebarUserName').textContent = STATE.user.name;
+    document.getElementById('sidebarUserEmail').textContent = STATE.user.email;
+    document.getElementById('topbarUserName').textContent = STATE.user.name;
+
+    const roleLabelEl = document.getElementById('topbarUserRole');
+    const sidebarRoleEl = document.getElementById('sidebarRoleBadge');
+    const segRolEl = document.getElementById('segRolActual');
+
+    if (STATE.role === 'owner') {
+        roleLabelEl.textContent = '👑 Dueño';
+        sidebarRoleEl.textContent = '👑 Dueño';
+        sidebarRoleEl.className = 'sidebar-role-badge owner';
+        if (segRolEl) segRolEl.textContent = 'Dueño';
+    } else {
+        roleLabelEl.textContent = '🔧 Admin';
+        sidebarRoleEl.textContent = '🔧 Admin';
+        sidebarRoleEl.className = 'sidebar-role-badge admin';
+        if (segRolEl) segRolEl.textContent = 'Admin';
+    }
+
+    // Hide owner-only items if admin
+    if (STATE.role !== 'owner') {
+        document.querySelectorAll('[data-owner-only="true"]').forEach(btn => {
+            btn.style.opacity = '0.45';
+        });
+    }
+
+    await loadDashboardData();
+
+    // Render all sections
+    renderDashboard();
+
+    // Navigate to resumen
+    navigateTo('resumen');
+
+    // Log login action
+    addLogEntry('Inicio de sesión exitoso', 'info');
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────
+async function loadDashboardData() {
+    try {
+        const [db, apts, reqs] = await Promise.all([
+            window.vitalStaysApi.listDashboardData(),
+            window.vitalStaysApi.listApartments(),
+            window.vitalStaysApi.listOwnerApartmentRequests()
+        ]);
+
+        apartments = apts.map(a => ({ id: a.id, title: a.name, location: a.location, price: a.price, bedrooms: a.bedrooms, bathrooms: a.bathrooms, size: a.size, status: a.status, featured: a.featured, verified: a.verified, badge: a.badge || '', image: a.image, views: a.views || 0, description: a.description }));
+        requestsData = reqs.map(r => ({ id: r.id, name: r.owner_name, email: r.owner_email, phone: r.owner_phone, city: r.location?.split(',')[0], price: r.price, description: r.description, status: r.status === 'aprobado' ? 'approved' : r.status === 'rechazado' ? 'rejected' : 'pending', date: r.submitted_at?.slice(0,10), bedrooms: r.bedrooms, size: r.size }));
+        usersData = (db.users || []).map(u => ({ id: u.id, name: u.name || 'Usuario', email: u.email, registered: u.created_at?.slice(0,10), views: u.views || 0, status: u.status || 'active' }));
+        bookingsData = (db.bookings || []).map(b => ({ ...b, id: b.id, user: b.full_name, email: b.email, apt: b.apartment_name, date: b.submitted_at?.slice(0,10), status: b.status || 'new' }));
+        messagesData = (db.messages || []).map(m => ({ ...m, id: m.id, from: m.full_name || m.email, subject: m.subject || 'Consulta', date: m.created_at?.slice(0,10), status: m.status || 'unread' }));
+        reviewsData = (db.reviews || []).map(r => ({ id: r.id, user: r.user_name, user_location: r.user_location || '', apt: r.apartment_name, rating: r.rating || 1, comment: r.comment || '', date: r.created_at?.slice(0,10), status: r.status || 'pending', admin_reply: r.admin_reply || '', avatar_url: r.avatar_url || '', isEditing: false }));
+        faqData = (db.faqs || []).map(f => ({ id: f.id, q: f.question, a: f.answer }));
+        ownersData = buildOwnersFromSources(db.owners || [], requestsData);
+        adminsData = (db.admins || []).map(a => ({ id: a.user_id, name: a.name || a.email, email: a.email, role: a.role, created: a.created_at?.slice(0,10), status: a.status }));
+        systemLogs = (db.logs || []).map(l => ({ time: l.created_at?.slice(0,16).replace('T',' '), user: l.user_email, action: l.action, severity: l.severity }));
+        todos = (db.todos || []).map(t => ({ id: t.id, text: t.text, priority: t.priority, done: Boolean(t.done) }));
+        paymentsData = (db.payments || []).map(p => {
+            const parsed = parsePaymentConcept(p.concept);
+            return {
+                id: p.id,
+                owner: p.owner_name,
+                apartment: parsed.apartment,
+                method: parsed.method,
+                concept: parsed.baseConcept,
+                rawConcept: p.concept,
+                amount: '$' + p.amount,
+                due: p.due_date,
+                date: p.paid_at?.slice(0,10),
+                status: p.status
+            };
+        });
+        calendarEventsData = (db.calendarEvents || []).map(e => ({ id: e.id, title: e.title || 'Evento', event_date: e.event_date, status: e.status || 'active' }));
+
+        if (db.settings) {
+            db.settings.forEach(s => {
+                const input = document.querySelector(`[data-key="${s.key}"]`) || document.querySelector(`[data-key="${s.key}"]`);
+                if (input) {
+                    if (input.type === 'checkbox') input.checked = (s.value === true || s.value === 'true');
+                    else input.value = s.value;
+                }
+            });
+        }
+        
+        renderDashboard();
+        showToast('Datos sincronizados 🔄');
+    } catch (err) {
+        console.error(err);
+        showToast('Error al conectar con la base de datos', 'error');
+    }
+}
+
+document.querySelectorAll('.sidebar-item[data-section]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const section = this.dataset.section;
+        navigateTo(section);
+    });
+});
+
+function applyAdminPermissions() {
+    if (STATE.role === 'owner') {
+        document.querySelectorAll('.sidebar-item').forEach(btn => btn.style.display = 'flex');
+        return;
+    }
+
+    // Ocultar botones del menú según checkboxes guardados (o cargados en DOM)
+    const permInputs = document.querySelectorAll('#section-configuracion [data-key^="perm_"]');
+    permInputs.forEach(input => {
+        const section = input.dataset.key.replace('perm_', '');
+        const btn = document.querySelector(`.sidebar-item[data-section="${section}"]`);
+        if (btn) {
+            btn.style.display = input.checked ? 'flex' : 'none';
+            btn.style.opacity = '1'; // Reset opacity from old logic
+        }
+    });
+}
+
+function navigateTo(section) {
+    // Permission check for owner-only sections
+    if (STATE.role !== 'owner') {
+        const permCheck = document.querySelector(`[data-key="perm_${section}"]`);
+        if (permCheck && !permCheck.checked) {
+            showPermissionLock(section);
+            activateSidebarItem(section);
+            return;
+        }
+    }
+
+    document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('section-' + section);
+    if (target) target.classList.add('active');
+
+    activateSidebarItem(section);
+    STATE.currentSection = section;
+
+    // Close sidebar on mobile
+    if (window.innerWidth <= 900) closeSidebar();
+}
+
+function activateSidebarItem(section) {
+    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector(`.sidebar-item[data-section="${section}"]`);
+    if (btn) btn.classList.add('active');
+}
+
+function showPermissionLock(section) {
+    const target = document.getElementById('section-' + section);
+    if (!target) return;
+    document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+    target.classList.add('active');
+
+    const contentId = section + 'Content';
+    const contentEl = document.getElementById(contentId);
+    if (contentEl) {
+        contentEl.innerHTML = `
+            <div class="permission-lock">
+                <div class="permission-lock-icon">🔒</div>
+                <h3>No tienes permiso para acceder a esta sección.</h3>
+                <p>Esta área está restringida al Dueño de la plataforma.<br>Contacta al administrador principal si necesitas acceso.</p>
+            </div>
+        `;
+    } else {
+        target.innerHTML = `
+            <div class="permission-lock">
+                <div class="permission-lock-icon">🔒</div>
+                <h3>No tienes permiso para acceder a esta sección.</h3>
+                <p>Esta área está restringida al Dueño de la plataforma.</p>
+            </div>
+        `;
+    }
+}
+
+// ── SIDEBAR MOBILE ─────────────────────────────────────────────
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+}
+
+// ── THEME ──────────────────────────────────────────────────────
+function toggleTheme() {
+    const newTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+}
+
+function applyTheme(theme) {
+    STATE.theme = theme;
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('vs-theme', theme);
+}
+
+// ── NOTIFICATIONS ──────────────────────────────────────────────
+function toggleNotifPanel() {
+    document.getElementById('notifPanel').classList.toggle('open');
+}
+
+function markAllNotifRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(el => {
+        el.classList.remove('unread');
+        el.querySelector('.notif-dot').style.background = 'var(--text-muted)';
+    });
+    document.querySelector('.topbar-notif-dot').style.display = 'none';
+    document.getElementById('notifPanel').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+    const panel = document.getElementById('notifPanel');
+    const btn = document.getElementById('notifBtn');
+    if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
+        panel.classList.remove('open');
+    }
+});
+
+// ── LOGOUT ─────────────────────────────────────────────────────
+document.getElementById('sidebarLogoutBtn').addEventListener('click', async function() {
+    if (confirm('¿Cerrar sesión de Vital Stays Admin?')) {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.signOutAdmin();
+        }
+        document.getElementById('adminLayout').classList.remove('visible');
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('loginFormEl').reset();
+        document.getElementById('loginError').style.display = 'none';
+        addLogEntry('Cierre de sesión', 'info');
+    }
+});
+
+// ── GLOBAL SEARCH ──────────────────────────────────────────────
+function handleGlobalSearch(q) {
+    if (!q) return;
+    q = q.toLowerCase();
+    const apt = apartments.find(a => a.title.toLowerCase().includes(q) || a.location.toLowerCase().includes(q));
+    if (apt) {
+        navigateTo('apartamentos');
+    }
+}
+
+// ── RENDER DASHBOARD ───────────────────────────────────────────
+function renderDashboard() {
+    updateSummaryStats();
+    applyAdminPermissions();
+    renderBarChart('barCiudad', getCityData(), ['#1a237e','#283593','#3949ab','#5c6bc0','#7986cb']);
+    renderBarChart('barTipos', getTypeData(), ['#8b1538','#a31a43','#ba1e4d','#d12358']);
+    renderActivityList();
+    renderTodoList();
+    renderRequests();
+    renderApartments();
+    renderPendientes();
+    renderDestacados();
+    renderUsersTable();
+    renderOwnersTable();
+    renderBookingsTable();
+    renderResenasTable();
+    renderFAQ();
+    renderAdminsTable();
+    renderLogs();
+    renderStatsSection();
+    renderFinanzas();
+    renderCalendar();
+    renderMapaZonas();
+    renderSeguridadActivity();
+}
+
+// ── BAR CHART ──────────────────────────────────────────────────
+function parseMoney(value) {
+    if (typeof value === 'number') return value;
+    return Number(String(value || '').replace(/[^0-9.-]/g, '')) || 0;
+}
+
+function formatMoney(value) {
+    return `$${Math.round(value).toLocaleString('en-US')}`;
+}
+
+function setSummaryValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+function isPendingStatus(status) {
+    const normalized = String(status || '').trim().toLowerCase();
+    return normalized === 'pending' || normalized === 'pendiente' || normalized === 'new' || normalized === 'nuevo';
+}
+
+function updateSummaryStats() {
+    const now = new Date();
+    const activeApartments = apartments.filter(a => a.status === 'active').length;
+    const pendingRequests = requestsData.filter(r => isPendingStatus(r.status)).length;
+    const totalRequests = requestsData.length;
+    const monthlyIncome = paymentsData
+        .filter(p => {
+            const date = new Date(p.date || p.due || Date.now());
+            return p.status === 'paid' && date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
+        })
+        .reduce((total, p) => total + parseMoney(p.amount), 0);
+    const avgRating = reviewsData.length
+        ? reviewsData.reduce((total, r) => total + (Number(r.rating) || 0), 0) / reviewsData.length
+        : 0;
+
+    setSummaryValue('statTotal', apartments.length);
+    setSummaryValue('statActivos', activeApartments);
+    setSummaryValue('statPendientes', pendingRequests);
+    setSummaryValue('statSolicitudes', totalRequests);
+    setSummaryValue('statIngresos', formatMoney(monthlyIncome));
+    setSummaryValue('statUsuarios', usersData.length);
+    setSummaryValue('statCalif', avgRating ? avgRating.toFixed(1) : '0.0');
+    setSummaryValue('statContactos', bookingsData.length + messagesData.length);
+
+    // Reseñas Stats Dinámicas
+    const totalReviews = reviewsData.length;
+    const repliedReviews = reviewsData.filter(r => r.admin_reply && r.admin_reply.trim() !== '').length;
+    const lowReviews = reviewsData.filter(r => r.rating <= 3).length;
+    const replyRate = totalReviews > 0 ? Math.round((repliedReviews / totalReviews) * 100) : 0;
+
+    setSummaryValue('reviewAvgStat', avgRating ? avgRating.toFixed(1) : '0.0');
+    setSummaryValue('reviewTotalStat', totalReviews);
+    setSummaryValue('reviewLowStat', lowReviews);
+    setSummaryValue('reviewRepliedStat', replyRate + '%');
+
+    // Sincronizar contadores con validación de existencia (safety checks)
+    const elSol = document.getElementById('sidebarSolicitudesBadge'); if(elSol) elSol.textContent = requestsData.length;
+    const elPen = document.getElementById('sidebarPendientesBadge'); if(elPen) elPen.textContent = pendingRequests;
+    const elRes = document.getElementById('sidebarReservasBadge'); if(elRes) elRes.textContent = bookingsData.filter(b => b.status === 'new').length;
+
+    const elAlert = document.getElementById('alertReqText'); if(elAlert) elAlert.textContent = `${pendingRequests} solicitudes requieren revisión`;
+}
+
+function getCityData() {
+    const cities = {};
+    apartments.forEach(a => {
+        const city = a.city || (a.location ? a.location.split(',')[0] : 'Sin ciudad');
+        cities[city] = (cities[city] || 0) + 1;
+    });
+    if (!Object.keys(cities).length) return [];
+    const max = Math.max(...Object.values(cities));
+    return Object.entries(cities).map(([label, value]) => ({
+        label, value, pct: Math.round((value / max) * 100)
+    }));
+}
+
+function getTypeData() {
+    const types = {};
+    apartments.forEach(a => {
+        const type = a.type || 'Apartamento';
+        types[type] = (types[type] || 0) + 1;
+    });
+    if (!Object.keys(types).length) return [];
+    const max = Math.max(...Object.values(types));
+    return Object.entries(types).map(([label, value]) => ({
+        label, value, pct: Math.round((value / max) * 100)
+    }));
+}
+
+function renderBarChart(id, data, colors) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = data.map((item, i) => `
+        <div class="bar-item">
+            <span class="bar-label">${item.label}</span>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:${item.pct}%;background:${colors[i % colors.length]}"></div>
+            </div>
+            <span class="bar-value">${item.value}</span>
+        </div>
+    `).join('');
+}
+
+function renderMapaZonas() {
+    const data = getCityData();
+    const el = document.getElementById('mapaBarZonas');
+    if (!el) return;
+
+    if (!data.length) {
+        el.innerHTML = `<div class="empty-state"><h4>Sin zonas disponibles</h4><p>Las propiedades con ciudad o ubicación aparecerán aquí.</p></div>`;
+        return;
+    }
+
+    renderBarChart('mapaBarZonas', data, ['#00897b', '#26a69a', '#4db6ac', '#80cbc4', '#b2dfdb']);
+}
+
+// ── ACTIVITY LIST ──────────────────────────────────────────────
+function renderActivityList() {
+    const el = document.getElementById('activityList');
+    if (!el) return;
+    if (!systemLogs || !systemLogs.length) {
+        el.innerHTML = '<div class="empty-state"><h4>Sin actividad</h4><p>La actividad aparecerá cuando haya datos en Supabase.</p></div>';
+        return;
+    }
+    const activityItems = systemLogs.slice(0, 5).map(l => ({
+        text: l.action,
+        time: l.time,
+        color: getSevColor(l.severity)
+    }));
+
+    el.innerHTML = activityItems.map(a => `
+        <div class="activity-item">
+            <div class="activity-dot" style="background:${a.color}"></div>
+            <div class="activity-content">
+                <div class="activity-text">${a.text}</div>
+                <div class="activity-time">${a.time}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ── TODO LIST ──────────────────────────────────────────────────
+function getSevColor(s) { return s === 'success' ? '#2e7d32' : s === 'danger' ? '#c62828' : s === 'warning' ? '#f57f17' : '#3949ab'; }
+
+function renderTodoList() {
+    const el = document.getElementById('todoList');
+    if (!el) return;
+    el.innerHTML = todos.map(t => `
+        <div class="todo-item">
+            <div class="todo-check ${t.done ? 'done' : ''}" onclick="toggleTodo(${t.id})">${t.done ? '✓' : ''}</div>
+            <span class="todo-text ${t.done ? 'done' : ''}">${t.text}</span>
+            <span class="todo-priority ${t.priority}">${t.priority === 'high' ? 'Alta' : t.priority === 'medium' ? 'Media' : 'Baja'}</span>
+        </div>
+    `).join('');
+}
+
+async function toggleTodo(id) {
+    const item = todos.find(t => t.id === id);
+    if (!item) return;
+    const done = !item.done;
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveTodo({ ...item, done });
+        }
+    } catch(e) { console.error(e); }
+    todos = todos.map(t => t.id === id ? { ...t, done } : t);
+    renderTodoList();
+}
+
+async function addTodo() {
+    const text = prompt('Nueva tarea:');
+    if (!text) return;
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+        const todo = await window.vitalStaysApi.saveTodo({ text, priority: 'medium', done: false });
+        todos.unshift(todo);
+    } else {
+        todos.push({ id: Date.now(), text, priority: 'medium', done: false });
+    }
+    renderTodoList();
+}
+
+// ── REQUESTS ───────────────────────────────────────────────────
+async function loadRequests() {
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.listOwnerApartmentRequests) {
+            const reqs = await window.vitalStaysApi.listOwnerApartmentRequests();
+            requestsData = reqs.map(r => ({
+                id: r.id,
+                name: r.owner_name || 'Sin nombre',
+                email: r.owner_email || '',
+                phone: r.owner_phone || '',
+                city: r.location ? r.location.split(',')[0] : '',
+                address: r.location || '',
+                price: r.price || 0,
+                description: r.description || '',
+                status: r.status === 'aprobado' ? 'approved' : r.status === 'rechazado' ? 'rejected' : 'pending',
+                date: r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : '',
+                bedrooms: r.bedrooms || 0,
+                size: r.size || 0
+            }));
+        } else {
+            requestsData = [...DEMO_REQUESTS];
+        }
+        renderRequests();
+        showToast('Solicitudes actualizadas');
+    } catch(err) {
+        console.error(err);
+        showToast('Error cargando solicitudes', 'error');
+    }
+}
+
+function filterRequests(q) {
+    const filtered = q
+        ? requestsData.filter(r => r.name.toLowerCase().includes(q.toLowerCase()) || r.email.toLowerCase().includes(q.toLowerCase()) || r.city.toLowerCase().includes(q.toLowerCase()))
+        : requestsData;
+    renderRequests(filtered);
+}
+
+function filterRequestsByStatus(status) {
+    const filtered = status === 'all' ? requestsData : requestsData.filter(r => r.status === status);
+    renderRequests(filtered);
+}
+
+function renderRequests(data, containerId) {
+    data = data || requestsData;
+    const el = document.getElementById(containerId || 'requestsList');
+    if (!el) return;
+
+    if (!data.length) {
+        el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><h4>No hay solicitudes</h4><p>Las nuevas solicitudes aparecerán aquí.</p></div>`;
+        return;
+    }
+
+    el.innerHTML = data.map(r => `
+        <div class="request-card" id="req-${containerId || 'main'}-${r.id}">
+            <div class="request-header">
+                <div>
+                    <div class="request-name">${r.name}</div>
+                    <div class="request-date">📅 ${r.date} &nbsp;|&nbsp; ✉️ ${r.email}</div>
+                </div>
+                <span class="badge ${r.status === 'pending' ? 'badge-warning' : r.status === 'approved' ? 'badge-success' : 'badge-danger'}">
+                    ${r.status === 'pending' ? '⏳ Pendiente' : r.status === 'approved' ? '✅ Aprobada' : '❌ Rechazada'}
+                </span>
+            </div>
+            <div class="request-meta">
+                <span class="meta-tag">📍 ${r.city}</span>
+                <span class="meta-tag">💰 $${r.price}/mes</span>
+                <span class="meta-tag">🛏️ ${r.bedrooms} hab.</span>
+                <span class="meta-tag">📐 ${r.size} m²</span>
+                <span class="meta-tag">📞 ${r.phone}</span>
+            </div>
+            <div style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:0.75rem;">${r.description}</div>
+            <div class="request-actions">
+                ${r.status === 'pending' ? `
+                    <button class="btn btn-success btn-sm" onclick="approveRequest(${r.id})">✅ Aprobar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openRejectModal(${r.id})">❌ Rechazar</button>
+                    <button class="btn btn-secondary btn-sm" onclick="convertToApt(${r.id})">🏠 Convertir a Apartamento</button>
+                ` : r.status === 'approved' ? `
+                    <button class="btn btn-secondary btn-sm" onclick="convertToApt(${r.id})">🏠 Crear Apartamento</button>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function approveRequest(id) {
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.updateOwnerApartmentRequestStatus) {
+            await window.vitalStaysApi.updateOwnerApartmentRequestStatus(id, 'aprobado');
+        }
+        const req = requestsData.find(r => r.id === id);
+        if (req) req.status = 'approved';
+        if (req && window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.saveOwner) {
+            await window.vitalStaysApi.saveOwner({
+                name: req.name,
+                email: req.email,
+                phone: req.phone,
+                apts: 1,
+                payment: 'pending',
+                since: req.date || new Date().toISOString().slice(0, 10)
+            });
+        }
+        ownersData = buildOwnersFromSources(ownersData, requestsData);
+        renderDashboard();
+        addLogEntry(`Aprobó solicitud de ${req?.name || 'desconocido'}`, 'success');
+        showToast('Solicitud aprobada ✅');
+    } catch(err) {
+        alert(err.message);
+    }
+}
+
+function openRejectModal(id) {
+    STATE.rejectTargetId = id;
+    document.getElementById('rejectReason').value = '';
+    document.getElementById('rejectModalOverlay').classList.add('open');
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModalOverlay').classList.remove('open');
+}
+
+async function confirmReject() {
+    const reason = document.getElementById('rejectReason').value.trim();
+    if (!reason) { alert('Por favor ingresa el motivo del rechazo.'); return; }
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.updateOwnerApartmentRequestStatus) {
+            await window.vitalStaysApi.updateOwnerApartmentRequestStatus(STATE.rejectTargetId, 'rechazado');
+        }
+        const req = requestsData.find(r => r.id === STATE.rejectTargetId);
+        if (req) req.status = 'rejected';
+        closeRejectModal();
+        renderDashboard();
+        addLogEntry(`Rechazó solicitud #${STATE.rejectTargetId}: ${reason}`, 'warning');
+        showToast('Solicitud rechazada ❌');
+    } catch(err) {
+        alert(err.message);
+    }
+}
+
+function convertToApt(reqId) {
+    const req = requestsData.find(r => r.id === reqId);
+    if (!req) return;
+    openAptModal();
+    setTimeout(() => {
+        document.getElementById('aptTitle').value = `Apartamento de ${req.name}`;
+        document.getElementById('aptLocation').value = `${req.city}, España`;
+        document.getElementById('aptPrice').value = req.price;
+        document.getElementById('aptBedrooms').value = req.bedrooms;
+        document.getElementById('aptSize').value = req.size;
+        document.getElementById('aptDesc').value = req.description;
+    }, 100);
+}
+
+// ── APARTMENTS ─────────────────────────────────────────────────
+async function loadApartments() { await loadDashboardData(); }
+
+function filterApartments(q) {
+    const filtered = q ? apartments.filter(a => a.title.toLowerCase().includes(q.toLowerCase()) || a.location.toLowerCase().includes(q.toLowerCase())) : apartments;
+    renderApartments(filtered);
+}
+
+function filterAptByStatus(status) {
+    const filtered = status === 'all' ? apartments : apartments.filter(a => a.status === status);
+    renderApartments(filtered);
+}
+
+function renderApartments(data, containerId) {
+    data = data || apartments;
+    const id = containerId || 'aptGrid';
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    if (!data.length) {
+        el.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">🏠</div><h4>Sin apartamentos</h4><p>Agrega tu primer apartamento.</p></div>`;
+        return;
+    }
+
+    el.innerHTML = data.map(apt => `
+        <div class="apt-card" id="apt-${apt.id}">
+            <div class="apt-img">
+                ${apt.image ? `<img src="${apt.image}" alt="${apt.title}" onerror="this.parentNode.innerHTML='🏠'">` : '🏠'}
+            </div>
+            <div class="apt-body">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;">
+                    <div class="apt-title">${apt.title}</div>
+                    ${apt.badge ? `<span class="badge ${apt.badge === 'Destacado' ? 'badge-accent' : 'badge-primary'}">${apt.badge}</span>` : ''}
+                </div>
+                <div class="apt-location">📍 ${apt.location}</div>
+                <div class="apt-price">$${apt.price.toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:var(--text-muted)">/mes</span></div>
+                <div class="apt-meta">
+                    <span>🛏️ ${apt.bedrooms}</span>
+                    <span>🚿 ${apt.bathrooms}</span>
+                    <span>📐 ${apt.size}m²</span>
+                    <span>👁️ ${apt.views}</span>
+                </div>
+                <div><span class="badge ${
+                    apt.status === 'active' ? 'badge-success' :
+                    apt.status === 'pending' ? 'badge-warning' :
+                    apt.status === 'paused' ? 'badge-gray' : 'badge-danger'
+                }">${apt.status === 'active' ? '✅ Activo' : apt.status === 'pending' ? '⏳ Pendiente' : apt.status === 'paused' ? '⏸ Pausado' : '❌ Rechazado'}</span>
+                ${apt.verified ? '<span class="badge badge-accent" style="margin-left:0.25rem;">✓ Verificado</span>' : ''}
+                </div>
+            </div>
+            <div class="apt-footer">
+                <div class="apt-toggles">
+                    <div class="toggle-wrap" title="Activo/Pausado">
+                        <div class="toggle ${apt.status === 'active' ? 'on' : ''}" onclick="toggleAptStatus(${apt.id}, this)"></div>
+                        <span class="toggle-label">Activo</span>
+                    </div>
+                    <div class="toggle-wrap" title="Destacado">
+                        <div class="toggle accent ${apt.featured ? 'on' : ''}" onclick="toggleAptFeatured(${apt.id}, this)"></div>
+                        <span class="toggle-label">⭐</span>
+                    </div>
+                </div>
+                <div style="display:flex;gap:0.4rem;">
+                    <button class="btn btn-secondary btn-sm" onclick="editApt(${apt.id})">✏️</button>
+                    ${STATE.role === 'owner' ? `<button class="btn btn-danger btn-sm" onclick="deleteApt(${apt.id})">🗑️</button>` : ''}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderPendientes() {
+    const pendingReqs = requestsData.filter(r => isPendingStatus(r.status));
+    renderRequests(pendingReqs, 'pendientesRequestsList');
+}
+
+function renderDestacados() {
+    renderApartments(apartments.filter(a => a.featured), 'destacadosGrid');
+}
+
+async function toggleAptStatus(id, el) {
+    const apt = apartments.find(a => a.id === id);
+    if (!apt) return;
+    const newStatus = apt.status === 'active' ? 'paused' : 'active';
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveApartment({ ...apt, name: apt.title, status: newStatus });
+        }
+        apt.status = newStatus;
+        el.classList.toggle('on');
+        renderDashboard();
+        addLogEntry(`Cambió estado de "${apt.title}" a ${apt.status}`, 'info');
+        showToast(`Apartamento ${apt.status === 'active' ? 'activado' : 'pausado'}`);
+    } catch(err) {
+        showToast('Error al cambiar estado', 'error');
+    }
+}
+
+async function toggleAptFeatured(id, el) {
+    const apt = apartments.find(a => a.id === id);
+    if (!apt) return;
+    const newFeatured = !apt.featured;
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveApartment({ ...apt, name: apt.title, featured: newFeatured });
+        }
+        apt.featured = newFeatured;
+        el.classList.toggle('on');
+        renderDashboard();
+        showToast(apt.featured ? 'Marcado como destacado ⭐' : 'Removido de destacados');
+    } catch(err) {
+        showToast('Error al cambiar destacado', 'error');
+    }
+}
+
+function editApt(id) {
+    const apt = apartments.find(a => a.id === id);
+    if (!apt) return;
+    openAptModal(apt);
+}
+
+async function deleteApt(id) {
+    if (!confirm('¿Eliminar este apartamento? Esta acción no se puede deshacer.')) return;
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.deleteApartment(id);
+            showToast('Apartamento eliminado 🗑️');
+            await loadDashboardData();
+        } else {
+            alert('No configurado');
+        }
+    } catch(err) {
+        alert(err.message);
+    }
+}
+
+// ── APARTMENT MODAL ────────────────────────────────────────────
+function openAptModal(apt) {
+    document.getElementById('aptModalOverlay').classList.add('open');
+    document.getElementById('aptModalTitle').textContent = apt ? 'Editar Apartamento' : 'Agregar Apartamento';
+    document.getElementById('aptId').value = apt ? apt.id : '';
+    document.getElementById('aptTitle').value = apt ? apt.title : '';
+    document.getElementById('aptLocation').value = apt ? apt.location : '';
+    document.getElementById('aptPrice').value = apt ? apt.price : '';
+    document.getElementById('aptBedrooms').value = apt ? apt.bedrooms : '';
+    document.getElementById('aptBathrooms').value = apt ? apt.bathrooms : '';
+    document.getElementById('aptSize').value = apt ? apt.size : '';
+    document.getElementById('aptStatus').value = apt ? apt.status : 'active';
+    document.getElementById('aptBadge').value = apt ? (apt.badge || '') : '';
+    document.getElementById('aptImage').value = apt ? (apt.image || '') : '';
+    document.getElementById('aptDesc').value = apt ? (apt.description || '') : '';
+
+    const toggleDest = document.getElementById('toggleDestacado');
+    const toggleVer = document.getElementById('toggleVerificado');
+    toggleDest.classList.toggle('on', apt ? apt.featured : false);
+    toggleVer.classList.toggle('on', apt ? apt.verified : false);
+
+    document.getElementById('galleryPreview').innerHTML = '';
+    document.getElementById('aptImgPreview').style.display = 'none';
+}
+
+function closeAptModal() {
+    document.getElementById('aptModalOverlay').classList.remove('open');
+}
+
+async function saveApartment(e) {
+    e.preventDefault();
+    const id = document.getElementById('aptId').value;
+    const submitBtn = e.target.querySelector('button[type="submit"]') || document.querySelector('button[onclick*="requestSubmit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    const data = {
+        id: id ? parseInt(id) : undefined,
+        name: document.getElementById('aptTitle').value,
+        location: document.getElementById('aptLocation').value,
+        price: parseInt(document.getElementById('aptPrice').value),
+        bedrooms: parseInt(document.getElementById('aptBedrooms').value) || 0,
+        bathrooms: parseInt(document.getElementById('aptBathrooms').value) || 0,
+        size: parseInt(document.getElementById('aptSize').value) || 0,
+        status: document.getElementById('aptStatus').value,
+        badge: document.getElementById('aptBadge').value,
+        image: document.getElementById('aptImage').value,
+        description: document.getElementById('aptDesc').value,
+        featured: document.getElementById('toggleDestacado').classList.contains('on'),
+        verified: document.getElementById('toggleVerificado').classList.contains('on'),
+        city: document.getElementById('aptLocation').value.split(',')[0].trim(),
+        type: 'Apartamento',
+        views: 0,
+        coordinates: document.getElementById('aptCoordinates')?.value || null
+    };
+
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveApartment(data);
+            addLogEntry(`Guardó apartamento "${data.name}"`, 'success');
+            showToast('Apartamento guardado ✅');
+            closeAptModal();
+            await loadDashboardData();
+        } else {
+            alert('No configurado');
+        }
+    } catch(err) {
+        alert(err.message);
+    } finally {
+        if (submitBtn) submitBtn.disabled = false;
+    }
+}
+
+function previewGallery(input) {
+    const preview = document.getElementById('galleryPreview');
+    preview.innerHTML = '';
+    [...input.files].forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'img-preview';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function previewApt() {
+    alert('Vista previa: Abre el detalle de este apartamento en el sitio público.\n\nTODO: Conectar con apartment-detail.html?id=' + (document.getElementById('aptId').value || 'nuevo'));
+}
+
+// ── USERS TABLE ────────────────────────────────────────────────
+function filterUsers(q) {
+    const filtered = q ? usersData.filter(u => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase())) : usersData;
+    renderUsersTable(filtered);
+}
+
+function renderUsersTable(data) {
+    data = data || usersData;
+    const el = document.getElementById('usersTable');
+    if (!el) return;
+    el.innerHTML = data.map(u => `
+        <tr>
+            <td><div style="display:flex;align-items:center;gap:0.6rem;"><div class="user-avatar-sm">${u.name.charAt(0)}</div>${u.name}</div></td>
+            <td>${u.email}</td>
+            <td>${u.registered}</td>
+            <td>${u.views}</td>
+            <td><span class="badge ${u.status === 'active' ? 'badge-success' : 'badge-danger'}">${u.status === 'active' ? '✅ Activo' : '🚫 Bloqueado'}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" title="Ver historial">👁</button>
+                <button class="btn ${u.status === 'active' ? 'btn-danger' : 'btn-success'} btn-sm" onclick="toggleUserStatus(${u.id})">${u.status === 'active' ? '🚫' : '✅'}</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function toggleUserStatus(id) {
+    const u = usersData.find(u => u.id === id);
+    if (!u) return;
+    const status = u.status === 'active' ? 'blocked' : 'active';
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.updateUserStatus) {
+        await window.vitalStaysApi.updateUserStatus(id, status);
+    }
+    u.status = status;
+    renderUsersTable();
+    showToast(`Usuario ${u.status === 'active' ? 'desbloqueado' : 'bloqueado'}`);
+}
+
+// ── OWNERS TABLE ───────────────────────────────────────────────
+function renderOwnersTable() {
+    const el = document.getElementById('ownersTable');
+    if (!el) return;
+    el.innerHTML = ownersData.map(o => `
+        <tr>
+            <td><div style="display:flex;align-items:center;gap:0.6rem;"><div class="user-avatar-sm">${o.name.charAt(0)}</div>${o.name}</div></td>
+            <td>${o.email}<br><span style="font-size:0.72rem;color:var(--text-muted)">${o.phone}</span></td>
+            <td>${o.apts}</td>
+            <td><span class="badge ${o.payment === 'paid' ? 'badge-success' : 'badge-warning'}">${o.payment === 'paid' ? '✅ Al día' : '⚠️ Pendiente'}</span></td>
+            <td>${o.since}</td>
+            <td>
+                <button class="btn btn-secondary btn-sm" title="Ver propiedades">🏠</button>
+                <button class="btn btn-secondary btn-sm" title="Contactar">✉️</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ── BOOKINGS TABLE ─────────────────────────────────────────────
+function renderBookingsTable() {
+    const el = document.getElementById('bookingsTable');
+    if (!el) return;
+    el.innerHTML = bookingsData.map(b => `
+        <tr>
+            <td>${b.user}</td>
+            <td>${b.email}</td>
+            <td>${b.apt}</td>
+            <td>${b.date}</td>
+            <td><span class="badge ${b.status === 'new' ? 'badge-info' : b.status === 'replied' ? 'badge-success' : 'badge-gray'}">${b.status === 'new' ? '🆕 Nuevo' : b.status === 'replied' ? '✅ Respondido' : '⏹ Cerrado'}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick="replyToBooking(${b.id})">✉️ Responder</button>
+                <button class="btn btn-secondary btn-sm" onclick="viewBookingDetail(${b.id})">📋 Detalle</button>
+            </td>
+        </tr>
+    `).join('');
+    document.getElementById('sidebarReservasBadge').textContent = bookingsData.filter(b => b.status === 'new').length;
+}
+
+// ── MESSAGES TABLE ─────────────────────────────────────────────
+function renderMessagesTable() {
+    const el = document.getElementById('messagesTable');
+    if (!el) return;
+    el.innerHTML = messagesData.map(m => `
+        <tr>
+            <td>${m.from}</td>
+            <td>${m.subject}</td>
+            <td>${m.date}</td>
+            <td><span class="badge ${m.status === 'unread' ? 'badge-info' : 'badge-gray'}">${m.status === 'unread' ? '🆕 No leído' : '✅ Leído'}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick="viewMessageDetail(${m.id})">📖 Leer</button>
+                <button class="btn btn-secondary btn-sm" onclick="replyToMessage(${m.id})">↩️ Responder</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ── DETAIL MODAL LOGIC ────────────────────────────────────────
+function closeDetailModal() {
+    document.getElementById('detailModalOverlay').classList.remove('open');
+}
+
+async function viewBookingDetail(id) {
+    const b = bookingsData.find(item => item.id === id);
+    if (!b) return;
+
+    document.getElementById('detailModalTitle').textContent = 'Detalle de Reserva / Contacto';
+    document.getElementById('detailModalBody').innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div><strong>Nombre:</strong><p>${b.full_name}</p></div>
+            <div><strong>Email:</strong><p>${b.email}</p></div>
+            <div><strong>Teléfono:</strong><p>${b.phone}</p></div>
+            <div><strong>DNI:</strong><p>${b.dni}</p></div>
+            <div><strong>Propiedad:</strong><p>${b.apartment_name}</p></div>
+            <div><strong>Fecha Mudanza:</strong><p>${b.move_in_date || 'N/A'}</p></div>
+            <div><strong>Ingresos:</strong><p>$${b.monthly_income || 0}</p></div>
+            <div><strong>Ocupación:</strong><p>${b.occupation}</p></div>
+        </div>
+        <div style="margin-top:1rem;"><strong>Comentarios adicionales:</strong><p>${b.additional_comments || 'Ninguno'}</p></div>
+    `;
+
+    const actionBtn = document.getElementById('detailModalActionBtn');
+    actionBtn.onclick = () => replyToBooking(id);
+    document.getElementById('detailModalOverlay').classList.add('open');
+}
+
+async function replyToBooking(id) {
+    const b = bookingsData.find(item => item.id === id);
+    if (!b) return;
+
+    const subject = encodeURIComponent(`Re: Tu consulta para ${b.apartment_name} - Vital Stays`);
+    const body = encodeURIComponent(`Hola ${b.full_name},\n\nGracias por tu interés en Vital Stays...`);
+    window.location.href = `mailto:${b.email}?subject=${subject}&body=${body}`;
+
+    // Marcar como respondido en la DB
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.updateRentalInquiryStatus(id, 'replied');
+            b.status = 'replied';
+            renderBookingsTable();
+        }
+    } catch(e) { console.error(e); }
+    closeDetailModal();
+}
+
+async function viewMessageDetail(id) {
+    const m = messagesData.find(item => item.id === id);
+    if (!m) return;
+
+    // Marcar como leído
+    await markMsgRead(id);
+
+    document.getElementById('detailModalTitle').textContent = 'Mensaje de Contacto';
+    document.getElementById('detailModalBody').innerHTML = `
+        <div style="margin-bottom:1rem;">
+            <strong>De:</strong> ${m.from} (${m.email || 'No email'})<br>
+            <strong>Asunto:</strong> ${m.subject}<br>
+            <strong>Fecha:</strong> ${m.date}
+        </div>
+        <div style="background:var(--bg); padding:1rem; border-radius:8px; white-space:pre-wrap;">${m.message || 'Sin contenido'}</div>
+    `;
+
+    const actionBtn = document.getElementById('detailModalActionBtn');
+    actionBtn.onclick = () => replyToMessage(id);
+    document.getElementById('detailModalOverlay').classList.add('open');
+}
+
+async function replyToMessage(id) {
+    const m = messagesData.find(item => item.id === id);
+    if (!m || !m.email) { alert('No hay correo disponible.'); return; }
+
+    const subject = encodeURIComponent(`Re: ${m.subject} - Vital Stays`);
+    window.location.href = `mailto:${m.email}?subject=${subject}`;
+    closeDetailModal();
+}
+
+async function markMsgRead(id) {
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.markMessageRead) {
+        await window.vitalStaysApi.markMessageRead(id);
+    }
+    const m = messagesData.find(m => m.id === id);
+    if (m) m.status = 'read';
+    renderMessagesTable();
+    showToast('Mensaje marcado como leído');
+}
+
+// ── REVIEWS TABLE ──────────────────────────────────────────────
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function renderResenasTable() {
+    const el = document.getElementById('resenasTable');
+    if (!el) return;
+    el.innerHTML = reviewsData.map((r, index) => `
+        <tr>
+            <td><input type="text" id="review-user-${index}" value="${escapeHtml(r.user || '')}" placeholder="Nombre" ${r.isEditing ? '' : 'disabled'}></td>
+            <td><input type="text" id="review-location-${index}" value="${escapeHtml(r.user_location || '')}" placeholder="Ciudad" ${r.isEditing ? '' : 'disabled'}></td>
+            <td><input type="text" id="review-apt-${index}" value="${escapeHtml(r.apt || 'General')}" placeholder="Apartamento o General" ${r.isEditing ? '' : 'disabled'}></td>
+            <td>
+                <select id="review-rating-${index}" ${r.isEditing ? '' : 'disabled'}>
+                    ${[1,2,3,4,5].map(value => `<option value="${value}" ${Number(r.rating || 5) === value ? 'selected' : ''}>${value} ⭐</option>`).join('')}
+                </select>
+            </td>
+            <td><textarea id="review-comment-${index}" style="min-height:84px;min-width:220px;" ${r.isEditing ? '' : 'disabled'}>${escapeHtml(r.comment || '')}</textarea></td>
+            <td><textarea id="review-reply-${index}" style="min-height:84px;min-width:220px;" placeholder="Respuesta del administrador" ${r.isEditing ? '' : 'disabled'}>${escapeHtml(r.admin_reply || '')}</textarea></td>
+            <td>
+                <select id="review-status-${index}" ${r.isEditing ? '' : 'disabled'}>
+                    <option value="published" ${r.status === 'published' ? 'selected' : ''}>Publicada</option>
+                    <option value="pending" ${r.status === 'pending' ? 'selected' : ''}>Pendiente</option>
+                </select>
+                <div style="font-size:0.74rem;color:var(--text-light);margin-top:0.45rem;">${r.date || 'Sin fecha'}</div>
+            </td>
+            <td>
+                <div style="display:flex;flex-direction:column;gap:0.45rem;min-width:120px;">
+                    <button class="btn btn-secondary btn-sm" onclick="toggleReviewEdit(${index})">${r.isEditing ? 'Cancelar' : '✏️ Editar'}</button>
+                    <button class="btn btn-success btn-sm" onclick="saveReviewRow(${index})" ${r.isEditing ? '' : 'disabled'}>💾 Guardar</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteReviewRow(${index})">🗑️ Eliminar</button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function addReviewRow() {
+    reviewsData.unshift({
+        id: null,
+        user: '',
+        user_location: '',
+        apt: 'General',
+        rating: 5,
+        comment: '',
+        admin_reply: '',
+        date: new Date().toISOString().slice(0, 10),
+        status: 'published',
+        avatar_url: '',
+        isEditing: true
+    });
+    renderResenasTable();
+    updateSummaryStats();
+}
+
+function toggleReviewEdit(index) {
+    const review = reviewsData[index];
+    if (!review) return;
+
+    if (review.isEditing && review.id) {
+        reviewsData[index] = { ...review, isEditing: false };
+    } else if (review.isEditing && !review.id) {
+        reviewsData.splice(index, 1);
+    } else {
+        reviewsData[index] = { ...review, isEditing: true };
+    }
+
+    renderResenasTable();
+}
+
+function getReviewRowData(index) {
+    return {
+        id: reviewsData[index]?.id || null,
+        user: document.getElementById(`review-user-${index}`)?.value.trim() || '',
+        user_location: document.getElementById(`review-location-${index}`)?.value.trim() || '',
+        apt: document.getElementById(`review-apt-${index}`)?.value.trim() || 'General',
+        rating: Number(document.getElementById(`review-rating-${index}`)?.value || 5),
+        comment: document.getElementById(`review-comment-${index}`)?.value.trim() || '',
+        admin_reply: document.getElementById(`review-reply-${index}`)?.value.trim() || '',
+        status: document.getElementById(`review-status-${index}`)?.value || 'published',
+        avatar_url: reviewsData[index]?.avatar_url || '',
+        date: reviewsData[index]?.date || new Date().toISOString().slice(0, 10)
+    };
+}
+
+async function saveReviewRow(index) {
+    const review = getReviewRowData(index);
+    if (!review.user || !review.comment) {
+        showToast('Completa al menos usuario y comentario', 'warning');
+        return;
+    }
+
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.saveReview) {
+            const saved = await window.vitalStaysApi.saveReview({
+                id: review.id,
+                user_name: review.user,
+                user_location: review.user_location,
+                apartment_name: review.apt,
+                rating: review.rating,
+                comment: review.comment,
+                status: review.status,
+                avatar_url: review.avatar_url,
+                admin_reply: review.admin_reply
+            });
+
+            reviewsData[index] = {
+                id: saved.id,
+                user: saved.user_name,
+                user_location: saved.user_location || '',
+                apt: saved.apartment_name || 'General',
+                rating: saved.rating || 5,
+                comment: saved.comment || '',
+                date: saved.created_at?.slice(0, 10) || review.date,
+                status: saved.status || 'published',
+                admin_reply: saved.admin_reply || '',
+                avatar_url: saved.avatar_url || '',
+                isEditing: false
+            };
+
+            showToast('Reseña guardada en Supabase ✅');
+        } else {
+            reviewsData[index] = { ...reviewsData[index], ...review, isEditing: false };
+            showToast('Modo Demo: reseña actualizada localmente', 'warning');
+        }
+
+        renderResenasTable();
+        updateSummaryStats();
+    } catch (error) {
+        console.error(error);
+        showToast(error.message || 'No se pudo guardar la reseña', 'error');
+    }
+}
+
+async function deleteReviewRow(index) {
+    const review = reviewsData[index];
+    if (!review) return;
+    if (!confirm('¿Eliminar esta reseña?')) return;
+
+    try {
+        if (review.id && window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.deleteReview) {
+            await window.vitalStaysApi.deleteReview(review.id);
+            showToast('Reseña eliminada de Supabase 🗑️');
+        } else {
+            showToast('Reseña eliminada');
+        }
+
+        reviewsData.splice(index, 1);
+        renderResenasTable();
+        updateSummaryStats();
+    } catch (error) {
+        console.error(error);
+        showToast(error.message || 'No se pudo eliminar la reseña', 'error');
+    }
+}
+
+// ── FAQ ────────────────────────────────────────────────────────
+const DEMO_FAQ = [
+    { id: 1, q: '¿Los apartamentos están verificados?', a: 'Sí. Revisamos cada propiedad antes de publicarla.' },
+    { id: 2, q: '¿Cómo solicito alquilar un apartamento?', a: 'Usa la opción de contacto en la ficha del apartamento.' },
+    { id: 3, q: '¿Puedo publicar mi apartamento?', a: 'Sí. Envía una solicitud desde "Publica tu apartamento".' },
+];
+
+faqData = SUPABASE_DASHBOARD_MODE ? [] : [...DEMO_FAQ];
+
+function renderFAQ(data) {
+    data = data || faqData;
+    const el = document.getElementById('faqList');
+    if (!el) return;
+    el.innerHTML = data.map(f => `
+        <div class="faq-edit-item" style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);">
+            <div class="form-group"><label>Pregunta</label><input type="text" value="${f.q}"></div>
+            <div class="form-group"><label>Respuesta</label><textarea style="min-height:60px">${f.a}</textarea></div>
+            <div style="display:flex;gap:0.5rem;">
+                <button class="btn btn-success btn-sm" onclick="showToast('FAQ guardada ✅')">💾 Guardar</button>
+                <button class="btn btn-danger btn-sm" onclick="this.closest('.faq-edit-item').remove()">🗑️ Eliminar</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function addFAQ() {
+    const el = document.getElementById('faqList');
+    if (!el) return;
+    const div = document.createElement('div');
+    div.className = 'faq-edit-item';
+    div.style.cssText = 'margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);';
+    div.innerHTML = `
+        <div class="form-group"><label>Pregunta</label><input type="text" placeholder="Escribe la pregunta..."></div>
+        <div class="form-group"><label>Respuesta</label><textarea style="min-height:60px" placeholder="Escribe la respuesta..."></textarea></div>
+        <div style="display:flex;gap:0.5rem;">
+            <button class="btn btn-success btn-sm" onclick="showToast('FAQ guardada ✅')">💾 Guardar</button>
+            <button class="btn btn-danger btn-sm" onclick="this.closest('.faq-edit-item').remove()">🗑️ Eliminar</button>
+        </div>
+    `;
+    el.prepend(div);
+}
+
+// ── ADMINS TABLE ───────────────────────────────────────────────
+function renderAdminsTable() {
+    if (STATE.role !== 'owner') return;
+    const el = document.getElementById('adminsTable');
+    if (!el) return;
+    el.innerHTML = adminsData.map(a => `
+        <tr>
+            <td><div style="display:flex;align-items:center;gap:0.6rem;"><div class="user-avatar-sm">${a.name.charAt(0)}</div>${a.name}</div></td>
+            <td>${a.email}</td>
+            <td><span class="badge ${a.role === 'owner' ? 'badge-warning' : 'badge-primary'}">${a.role === 'owner' ? '👑 Dueño' : '🔧 Admin'}</span></td>
+            <td>${a.created}</td>
+            <td><span class="badge badge-success">✅ Activo</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm">✏️ Editar</button>
+                ${a.role !== 'owner' ? `<button class="btn btn-danger btn-sm" onclick="deleteAdmin('${a.id}')">🗑️</button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function deleteAdmin(id) {
+    if (!confirm('¿Eliminar este administrador?')) return;
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.deleteAdminProfile) {
+        await window.vitalStaysApi.deleteAdminProfile(id);
+    }
+    await loadDashboardData();
+    showToast('Administrador eliminado');
+}
+
+function openAddAdminModal() {
+    document.getElementById('addAdminModalOverlay').classList.add('open');
+}
+
+async function createAdmin() {
+    const name = document.getElementById('newAdminName').value.trim();
+    const email = document.getElementById('newAdminEmail').value.trim();
+    const role = document.getElementById('newAdminRole').value;
+    if (!name || !email) { alert('Completa todos los campos.'); return; }
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.setAdminRoleByEmail) {
+            await window.vitalStaysApi.setAdminRoleByEmail(email, role, name);
+        }
+        await loadDashboardData();
+        document.getElementById('addAdminModalOverlay').classList.remove('open');
+        addLogEntry(`Creó administrador ${name} (${role})`, 'success');
+        showToast('Administrador creado ✅');
+    } catch (err) {
+        alert(err.message || 'No se pudo crear el administrador. Crea primero el usuario en Supabase Auth.');
+    }
+}
+
+function addLogEntry(action, severity) {
+    const time = new Date().toLocaleString().slice(0,16);
+    systemLogs.unshift({ time, user: STATE.user.email, action, severity });
+    renderLogs();
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.addActivityLog) {
+        window.vitalStaysApi.addActivityLog(action, severity).catch(console.error);
+    }
+}
+
+function renderLogs() {
+    if (STATE.role !== 'owner') return;
+    const el = document.getElementById('logsList');
+    if (!el) return;
+    el.innerHTML = systemLogs && systemLogs.length ? systemLogs.slice(0, 30).map(l => `
+        <div class="log-entry">
+            <span class="log-time">${l.time}</span>
+            <span class="log-user">${l.user}</span>
+            <span class="log-action">${l.action}</span>
+            <span class="log-severity badge ${
+                l.severity === 'success' ? 'badge-success' :
+                l.severity === 'warning' ? 'badge-warning' :
+                l.severity === 'danger' ? 'badge-danger' : 'badge-info'
+            }">${l.severity}</span>
+        </div>
+    `).join('') : '<div class="empty-state">Sin registros</div>';
+}
+
+// ── STATS SECTION ──────────────────────────────────────────────
+function renderStatsSection() {
+    renderBarChart('statBarCiudad', getCityData(), ['#1a237e','#283593','#3949ab','#5c6bc0']);
+    renderBarChart('statBarTipos', getTypeData(), ['#8b1538','#a31a43','#ba1e4d','#d12358']);
+
+    // Cálculos de tarjetas superiores
+    const totalViews = apartments.reduce((sum, a) => sum + (Number(a.views) || 0), 0);
+    const totalInquiries = bookingsData.length + messagesData.length;
+    const conversion = totalViews > 0 ? ((totalInquiries / totalViews) * 100).toFixed(1) : 0;
+    const approvedRequests = requestsData.filter(r => r.status === 'approved').length;
+    const rejectedRequests = requestsData.filter(r => r.status === 'rejected').length;
+    const resolvedRequests = approvedRequests + rejectedRequests;
+    const approvalRate = resolvedRequests > 0 ? Math.round((approvedRequests / resolvedRequests) * 100) : 0;
+    const averagePrice = apartments.length
+        ? Math.round(apartments.reduce((sum, apartment) => sum + (Number(apartment.price) || 0), 0) / apartments.length)
+        : 0;
+    
+    // Contar propietarios únicos (de solicitudes + existentes)
+    const ownerEmails = new Set(requestsData.map(r => r.email));
+    const totalOwners = ownerEmails.size > 0 ? ownerEmails.size : 1; // Fallback si no hay datos
+
+    // Actualizar elementos DOM
+    setSummaryValue('statVisitasEst', totalViews.toLocaleString());
+    setSummaryValue('statConsultasEst', totalInquiries);
+    setSummaryValue('statConvEst', conversion + '%');
+    setSummaryValue('statOwnersEst', totalOwners);
+    setSummaryValue('approvalRateValue', approvalRate + '%');
+    setSummaryValue('approvalApprovedBadge', `✓ ${approvedRequests} Aprobadas`);
+    setSummaryValue('approvalRejectedBadge', `✗ ${rejectedRequests} Rechazadas`);
+    setSummaryValue('averagePriceValue', formatMoney(averagePrice));
+
+    const averagePriceRangesEl = document.getElementById('averagePriceRanges');
+    if (averagePriceRangesEl) {
+        const ranges = [
+            { label: '$0-800', count: apartments.filter(a => Number(a.price || 0) < 800).length, color: 'var(--accent)' },
+            { label: '$800-1.2k', count: apartments.filter(a => Number(a.price || 0) >= 800 && Number(a.price || 0) < 1200).length, color: 'var(--primary-light)' },
+            { label: '$1.2k+', count: apartments.filter(a => Number(a.price || 0) >= 1200).length, color: 'var(--warning)' }
+        ];
+        const maxRangeCount = Math.max(...ranges.map(range => range.count), 1);
+        averagePriceRangesEl.innerHTML = `
+            <div class="bar-chart" style="gap:0.4rem;">
+                ${ranges.map(range => `
+                    <div class="bar-item">
+                        <span class="bar-label" style="min-width:60px;">${range.label}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:${Math.round((range.count / maxRangeCount) * 100)}%;background:${range.color}"></div>
+                        </div>
+                        <span class="bar-value">${range.count}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    const statsEl = document.getElementById('statsTable');
+    if (!statsEl) return;
+    const paidIncome = paymentsData
+        .filter(p => p.status === 'paid')
+        .reduce((total, p) => total + parseMoney(p.amount), 0);
+    statsEl.innerHTML = `
+        <tr>
+            <td>Actual</td>
+            <td>${apartments.length}</td>
+            <td>${requestsData.length}</td>
+            <td>${approvedRequests}</td>
+            <td>${rejectedRequests}</td>
+            <td>${bookingsData.length}</td>
+            <td>${apartments.reduce((total, a) => total + (Number(a.views) || 0), 0)}</td>
+            <td>${formatMoney(paidIncome)}</td>
+        </tr>
+    `;
+}
+
+function updateStats(period) {
+    // TODO: Filtrar datos por período desde Supabase
+    showToast(`Estadísticas actualizadas: ${period}`);
+}
+
+// ── FINANZAS ───────────────────────────────────────────────────
+function buildPaymentConcept(baseConcept, apartment, method) {
+    const cleanConcept = (baseConcept || 'Ingreso registrado').trim();
+    const cleanApartment = (apartment || 'Sin apartamento').trim();
+    const cleanMethod = (method || 'Sin medio').trim();
+    return `${cleanConcept} | Apartamento: ${cleanApartment} | Medio: ${cleanMethod}`;
+}
+
+function parsePaymentConcept(concept) {
+    const raw = String(concept || '');
+    const parts = raw.split(' | ');
+    const baseConcept = parts[0] || raw;
+    const apartmentPart = parts.find(part => part.startsWith('Apartamento: ')) || '';
+    const methodPart = parts.find(part => part.startsWith('Medio: ')) || '';
+    return {
+        baseConcept: baseConcept.trim(),
+        apartment: apartmentPart.replace('Apartamento: ', '').trim(),
+        method: methodPart.replace('Medio: ', '').trim()
+    };
+}
+
+function togglePaymentForm(forceState) {
+    const card = document.getElementById('paymentFormCard');
+    if (!card) return;
+    const shouldShow = typeof forceState === 'boolean' ? forceState : card.style.display === 'none';
+    card.style.display = shouldShow ? 'block' : 'none';
+    if (!shouldShow) {
+        ['paymentOwner','paymentApartment','paymentConcept','paymentAmount','paymentPaidAt'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input) input.value = '';
+        });
+        const method = document.getElementById('paymentMethod');
+        const status = document.getElementById('paymentStatus');
+        if (method) method.value = 'Transferencia';
+        if (status) status.value = 'paid';
+    } else {
+        const paidAt = document.getElementById('paymentPaidAt');
+        if (paidAt && !paidAt.value) paidAt.value = new Date().toISOString().slice(0, 10);
+    }
+}
+
+async function savePaymentRecord() {
+    const owner = document.getElementById('paymentOwner')?.value.trim() || '';
+    const apartment = document.getElementById('paymentApartment')?.value.trim() || '';
+    const concept = document.getElementById('paymentConcept')?.value.trim() || '';
+    const amount = Number(document.getElementById('paymentAmount')?.value || 0);
+    const paidAt = document.getElementById('paymentPaidAt')?.value || '';
+    const method = document.getElementById('paymentMethod')?.value || 'Transferencia';
+    const status = document.getElementById('paymentStatus')?.value || 'paid';
+
+    if (!owner || !apartment || !concept || !amount || !paidAt) {
+        showToast('Completa todos los datos del ingreso', 'warning');
+        return;
+    }
+
+    const fullConcept = buildPaymentConcept(concept, apartment, method);
+
+    try {
+        let savedPayment;
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.savePayment) {
+            const saved = await window.vitalStaysApi.savePayment({
+                owner_name: owner,
+                concept: fullConcept,
+                amount,
+                due_date: paidAt,
+                paid_at: status === 'paid' ? paidAt : null,
+                status
+            });
+            savedPayment = {
+                id: saved.id,
+                owner: saved.owner_name,
+                apartment,
+                method,
+                concept,
+                rawConcept: saved.concept,
+                amount: '$' + saved.amount,
+                due: saved.due_date,
+                date: saved.paid_at || paidAt,
+                status: saved.status
+            };
+            showToast('Ingreso guardado en Supabase ✅');
+        } else {
+            savedPayment = {
+                id: Date.now(),
+                owner,
+                apartment,
+                method,
+                concept,
+                rawConcept: fullConcept,
+                amount: '$' + amount,
+                due: paidAt,
+                date: paidAt,
+                status
+            };
+            showToast('Modo Demo: ingreso guardado localmente', 'warning');
+        }
+
+        paymentsData.unshift(savedPayment);
+        togglePaymentForm(false);
+        renderFinanzas();
+        updateSummaryStats();
+        addLogEntry(`Registró ingreso de ${owner} por ${formatMoney(amount)}`, 'success');
+        generateReceipt(savedPayment);
+    } catch (error) {
+        console.error(error);
+        showToast(error.message || 'No se pudo guardar el ingreso', 'error');
+    }
+}
+
+function generateReceipt(payment) {
+    const amountValue = parseMoney(payment.amount);
+    const receiptNumber = `VS-${payment.id || Date.now()}`;
+    const receiptWindow = window.open('', '_blank', 'width=900,height=700');
+    if (!receiptWindow) {
+        showToast('Permite ventanas emergentes para generar el recibo', 'warning');
+        return;
+    }
+
+    receiptWindow.document.write(`
+        <html>
+        <head>
+            <title>Recibo ${receiptNumber}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 0; background: #f4f6fb; color: #132238; }
+                .sheet { max-width: 820px; margin: 24px auto; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 36px rgba(19,34,56,0.12); }
+                .header { background: linear-gradient(135deg, #0f766e, #164e63); color: #fff; padding: 28px 32px; }
+                .brand { display: flex; align-items: center; gap: 14px; }
+                .logo { width: 54px; height: 54px; border-radius: 14px; background: rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; }
+                .brand h1 { margin: 0; font-size: 28px; }
+                .brand p { margin: 4px 0 0; opacity: 0.9; }
+                .content { padding: 30px 32px; }
+                .meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+                .card { border: 1px solid #dbe3ef; border-radius: 14px; padding: 16px; background: #f8fafc; }
+                .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #5b6b80; margin-bottom: 6px; }
+                .value { font-size: 18px; font-weight: 700; }
+                .table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+                .table th, .table td { border-bottom: 1px solid #e5eaf2; padding: 12px 8px; text-align: left; }
+                .total { margin-top: 22px; padding: 18px; background: #ecfeff; border: 1px solid #99f6e4; border-radius: 14px; display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; }
+                .footer { padding: 0 32px 30px; color: #5b6b80; font-size: 13px; }
+                .actions { padding: 0 32px 32px; }
+                .actions button { background: #0f766e; color: #fff; border: 0; border-radius: 10px; padding: 12px 18px; font-weight: 700; cursor: pointer; }
+                @media print { .actions { display:none; } body { background:#fff; } .sheet { box-shadow:none; margin:0; } }
+            </style>
+        </head>
+        <body>
+            <div class="sheet">
+                <div class="header">
+                    <div class="brand">
+                        <div class="logo">VS</div>
+                        <div>
+                            <h1>Vital Stays</h1>
+                            <p>Recibo de ingreso y pago registrado</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="meta">
+                        <div class="card"><div class="label">Recibo</div><div class="value">${receiptNumber}</div></div>
+                        <div class="card"><div class="label">Fecha</div><div class="value">${payment.date || payment.due || ''}</div></div>
+                        <div class="card"><div class="label">Pagador</div><div class="value">${escapeHtml(payment.owner || '')}</div></div>
+                        <div class="card"><div class="label">Apartamento</div><div class="value">${escapeHtml(payment.apartment || '')}</div></div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr><th>Concepto</th><th>Medio</th><th>Estado</th><th>Monto</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${escapeHtml(payment.concept || '')}</td>
+                                <td>${escapeHtml(payment.method || '')}</td>
+                                <td>${escapeHtml(payment.status || '')}</td>
+                                <td>${formatMoney(amountValue)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="total">
+                        <span>Total recibido</span>
+                        <span>${formatMoney(amountValue)}</span>
+                    </div>
+                </div>
+                <div class="footer">
+                    Este recibo fue generado automáticamente por Vital Stays como constancia del ingreso registrado en el panel administrativo.
+                </div>
+                <div class="actions">
+                    <button onclick="window.print()">Imprimir / Guardar PDF</button>
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+    receiptWindow.document.close();
+}
+
+function generateReceiptById(id) {
+    const payment = paymentsData.find(item => String(item.id) === String(id));
+    if (!payment) {
+        showToast('No se encontró el pago para generar el recibo', 'warning');
+        return;
+    }
+    generateReceipt(payment);
+}
+
+function renderFinanzas() {
+    const paidPayments = paymentsData.filter(p => p.status === 'paid');
+    const now = new Date();
+    const monthIncome = paidPayments
+        .filter(p => {
+            const date = new Date(p.date || p.due || Date.now());
+            return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
+        })
+        .reduce((total, p) => total + parseMoney(p.amount), 0);
+    const yearIncome = paidPayments
+        .filter(p => {
+            const date = new Date(p.date || p.due || Date.now());
+            return date.getFullYear() === now.getFullYear();
+        })
+        .reduce((total, p) => total + parseMoney(p.amount), 0);
+    const totalIncome = paidPayments.reduce((total, p) => total + parseMoney(p.amount), 0);
+
+    setSummaryValue('financeMonthIncome', formatMoney(monthIncome));
+    setSummaryValue('financeYearIncome', formatMoney(yearIncome));
+    setSummaryValue('financeTotalIncome', formatMoney(totalIncome));
+
+    const monthlyTotals = {};
+    paidPayments.forEach(p => {
+        const date = new Date(p.date || p.due || Date.now());
+        const key = date.toLocaleString('es', { month: 'short' });
+        monthlyTotals[key] = (monthlyTotals[key] || 0) + parseMoney(p.amount);
+    });
+    const meses = Object.keys(monthlyTotals);
+    const valores = Object.values(monthlyTotals);
+    const maxVal = Math.max(...valores, 1);
+    const el = document.getElementById('finanzasBarMes');
+    if (el) {
+        el.innerHTML = meses.length ? meses.map((m, i) => `
+            <div class="bar-item">
+                <span class="bar-label">${m}</span>
+                <div class="bar-track"><div class="bar-fill" style="width:${valores[i] ? Math.round(valores[i]/maxVal*100) : 0}%;background:var(--primary)"></div></div>
+                <span class="bar-value">${valores[i] ? '$'+valores[i].toLocaleString() : '–'}</span>
+            </div>
+        `).join('') : '<div class="empty-state"><h4>Sin ingresos</h4><p>Los pagos aparecerán cuando existan en Supabase.</p></div>';
+    }
+
+    const pagosEl = document.getElementById('pagosTable');
+    if (pagosEl) {
+        pagosEl.innerHTML = paymentsData.filter(p => p.status === 'pending').map(p => `
+            <tr><td>${p.owner}</td><td>${p.amount}</td><td>${p.due}</td><td><span class="badge badge-warning">⚠️ Pendiente</span></td></tr>
+        `).join('');
+    }
+
+    const histEl = document.getElementById('historialTable');
+    if (histEl) {
+        histEl.innerHTML = paymentsData.filter(h => h.status !== 'pending').map(h => `
+            <tr>
+                <td>${h.date}</td>
+                <td>${h.owner}</td>
+                <td>${h.concept}${h.apartment ? `<div style="font-size:0.76rem;color:var(--text-secondary);margin-top:0.2rem;">🏠 ${h.apartment}${h.method ? ` · ${h.method}` : ''}</div>` : ''}</td>
+                <td>${h.amount}</td>
+                <td><span class="badge ${h.status === 'paid' ? 'badge-success' : 'badge-danger'}">${h.status === 'paid' ? '✅ Pagado' : '❌ Fallido'}</span></td>
+                <td><button class="btn btn-secondary btn-sm" onclick="generateReceiptById(${h.id})">🧾 Recibo</button></td>
+            </tr>
+        `).join('');
+    }
+}
+
+// ── CALENDAR ───────────────────────────────────────────────────
+let calDate = new Date(2026, 4, 1); // May 2026
+
+function renderCalendar() {
+    const headerEl = document.getElementById('calendarHeader');
+    const gridEl = document.getElementById('calendarGrid');
+    const labelEl = document.getElementById('calMonthLabel');
+    const listEl = document.getElementById('calendarEventsList');
+    if (!headerEl || !gridEl || !labelEl) return;
+
+    const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    headerEl.innerHTML = days.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
+
+    const year = calDate.getFullYear();
+    const month = calDate.getMonth();
+    labelEl.textContent = new Date(year, month, 1).toLocaleString('es', { month: 'long', year: 'numeric' });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+    const monthEvents = (calendarEventsData || []).filter(event => {
+        if (!event.event_date) return false;
+        const eventDate = new Date(`${event.event_date}T00:00:00`);
+        return eventDate.getFullYear() === year && eventDate.getMonth() === month;
+    });
+    const eventDays = new Set(monthEvents.map(event => new Date(`${event.event_date}T00:00:00`).getDate()));
+
+    let cells = '';
+    for (let i = 0; i < firstDay; i++) {
+        cells += '<div class="calendar-day other-month"></div>';
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        const dayEvents = monthEvents.filter(event => new Date(`${event.event_date}T00:00:00`).getDate() === d);
+        const hasEvent = eventDays.has(d);
+        cells += `
+            <div class="calendar-day ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}">
+                <div>${d}</div>
+                ${dayEvents.length ? `<div style="font-size:0.68rem;margin-top:0.35rem;line-height:1.2;">${dayEvents.slice(0,2).map(event => escapeHtml(event.title)).join('<br>')}</div>` : ''}
+            </div>
+        `;
+    }
+    gridEl.innerHTML = cells;
+
+    if (listEl) {
+        listEl.innerHTML = monthEvents.length
+            ? `
+                <div class="card-header" style="padding:0 0 0.75rem 0;"><span class="card-title">Eventos del mes</span></div>
+                ${monthEvents.map(event => `
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:0.75rem;padding:0.8rem 0;border-top:1px solid var(--border);">
+                        <div>
+                            <div style="font-weight:700;color:var(--text);">${escapeHtml(event.title)}</div>
+                            <div style="font-size:0.82rem;color:var(--text-secondary);">${event.event_date}</div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCalendarEvent(${event.id})">🗑️ Eliminar</button>
+                    </div>
+                `).join('')}
+            `
+            : '<div class="empty-state"><h4>Sin eventos este mes</h4><p>Añade uno nuevo y aparecerá aquí.</p></div>';
+    }
+}
+
+function prevMonth() { calDate.setMonth(calDate.getMonth() - 1); renderCalendar(); }
+function nextMonth() { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); }
+
+function openCalendarEventForm() {
+    const form = document.getElementById('calendarEventForm');
+    const dateInput = document.getElementById('calendarEventDate');
+    if (!form || !dateInput) return;
+    form.style.display = 'block';
+    dateInput.value = new Date(calDate.getFullYear(), calDate.getMonth(), 1).toISOString().slice(0, 10);
+}
+
+function closeCalendarEventForm() {
+    const form = document.getElementById('calendarEventForm');
+    const titleInput = document.getElementById('calendarEventTitle');
+    const dateInput = document.getElementById('calendarEventDate');
+    if (form) form.style.display = 'none';
+    if (titleInput) titleInput.value = '';
+    if (dateInput) dateInput.value = '';
+}
+
+async function saveCalendarEvent() {
+    const titleInput = document.getElementById('calendarEventTitle');
+    const dateInput = document.getElementById('calendarEventDate');
+    const title = titleInput?.value.trim() || '';
+    const eventDate = dateInput?.value || '';
+
+    if (!title || !eventDate) {
+        showToast('Completa el título y la fecha del evento', 'warning');
+        return;
+    }
+
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.saveCalendarEvent) {
+            const saved = await window.vitalStaysApi.saveCalendarEvent({ title, event_date: eventDate, status: 'active' });
+            calendarEventsData.push({
+                id: saved.id,
+                title: saved.title,
+                event_date: saved.event_date,
+                status: saved.status || 'active'
+            });
+            showToast('Evento guardado en Supabase ✅');
+        } else {
+            calendarEventsData.push({ id: Date.now(), title, event_date: eventDate, status: 'active' });
+            showToast('Modo Demo: evento guardado localmente', 'warning');
+        }
+
+        closeCalendarEventForm();
+        renderCalendar();
+    } catch (error) {
+        console.error(error);
+        showToast(error.message || 'No se pudo guardar el evento', 'error');
+    }
+}
+
+async function deleteCalendarEvent(id) {
+    if (!confirm('¿Eliminar este evento?')) return;
+
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured() && window.vitalStaysApi.deleteCalendarEvent) {
+            await window.vitalStaysApi.deleteCalendarEvent(id);
+        }
+        calendarEventsData = calendarEventsData.filter(event => event.id !== id);
+        renderCalendar();
+        showToast('Evento eliminado');
+    } catch (error) {
+        console.error(error);
+        showToast(error.message || 'No se pudo eliminar el evento', 'error');
+    }
+}
+
+// ── SEGURIDAD ACTIVITY ─────────────────────────────────────────
+function renderSeguridadActivity() {
+    const el = document.getElementById('seguridadActivity');
+    if (!el) return;
+    const recent = systemLogs && systemLogs.length ? systemLogs.slice(0, 5) : [];
+    if (!recent.length) {
+        el.innerHTML = '<div class="empty-state"><h4>Sin cambios recientes</h4><p>Los cambios aparecerán cuando haya registros en Supabase.</p></div>';
+        return;
+    }
+    el.innerHTML = recent.map(l => `
+        <div class="activity-item">
+            <div class="activity-dot" style="background:${l.severity === 'success' ? '#2e7d32' : l.severity === 'danger' ? '#c62828' : l.severity === 'warning' ? '#f57f17' : 'var(--primary)'}"></div>
+            <div class="activity-content">
+                <div class="activity-text">${l.action}</div>
+                <div class="activity-time">${l.time} · ${l.user}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ── SAVE ACTIONS ───────────────────────────────────────────────
+async function guardarContenido() {
+    const inputs = document.querySelectorAll('#section-contenido [data-key]');
+    const settings = Array.from(inputs).map(i => ({ key: i.getAttribute('data-key'), value: i.value }));
+    
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveSiteSettings(settings);
+            addLogEntry('Actualizó contenido del sitio', 'info');
+            showToast('Contenido guardado ✅');
+        } else {
+            showToast('Modo Demo: Cambios no persistidos', 'warning');
+        }
+    } catch(e) {
+        alert('Error al guardar: ' + e.message);
+    }
+}
+
+async function guardarConfiguracion() {
+    const inputs = document.querySelectorAll('#section-configuracion [data-key]');
+    const settings = Array.from(inputs).map(i => ({ 
+        key: i.dataset.key, 
+        value: i.type === 'checkbox' ? i.checked : i.value 
+    }));
+
+    try {
+        if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+            await window.vitalStaysApi.saveSiteSettings(settings);
+            addLogEntry('Actualizó configuración global', 'warning');
+            showToast('Configuración guardada ✅');
+        } else {
+            showToast('Modo Demo: Cambios no persistidos', 'warning');
+        }
+    } catch(e) {
+        alert('Error al guardar: ' + e.message);
+    }
+}
+
+function exportarReporte() {
+    const financeSection = document.getElementById('section-finanzas');
+    const isFinanceActive = financeSection && financeSection.classList.contains('active');
+
+    const csv = isFinanceActive
+        ? 'Fecha,Persona,Apartamento,Concepto,Medio,Monto,Estado\n' +
+          paymentsData.map(p => `"${p.date || p.due || ''}","${p.owner || ''}","${p.apartment || ''}","${p.concept || ''}","${p.method || ''}",${parseMoney(p.amount)},${p.status || ''}`).join('\n')
+        : 'ID,Título,Ubicación,Precio,Estado\n' +
+          apartments.map(a => `${a.id},"${a.title}","${a.location}",${a.price},${a.status}`).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = isFinanceActive ? 'vital-stays-reporte-financiero.csv' : 'vital-stays-reporte.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    addLogEntry(isFinanceActive ? 'Exportó reporte financiero' : 'Exportó reporte de apartamentos', 'info');
+    showToast(isFinanceActive ? 'Reporte financiero exportado 📤' : 'Reporte exportado 📤');
+}
+
+// ── TOAST ──────────────────────────────────────────────────────
+function showToast(msg, type) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position:fixed; bottom:1.5rem; right:1.5rem; z-index:9999;
+        background:${type === 'error' ? 'var(--danger)' : 'var(--primary)'};
+        color:white; padding:0.75rem 1.25rem; border-radius:10px;
+        font-size:0.85rem; font-weight:600; font-family:'Poppins',sans-serif;
+        box-shadow:0 8px 24px rgba(0,0,0,0.2);
+        animation:slideUp 0.3s ease;
+        max-width:320px;
+    `;
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+}
+
+// ── IMAGE PREVIEW ──────────────────────────────────────────────
+document.getElementById('aptImage').addEventListener('input', function() {
+    const img = document.getElementById('aptImgPreview');
+    if (this.value) { img.src = this.value; img.style.display = 'block'; }
+    else { img.style.display = 'none'; }
+});
+
+// ── CLOSE MODALS ON OVERLAY CLICK ─────────────────────────────
+document.getElementById('aptModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAptModal();
+});
+
+document.getElementById('rejectModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeRejectModal();
+});
+
+// Keep emoji glyphs from colliding with neighboring text in compact layouts.
+function wrapDashboardEmojis(root) {
+    root = root || document.getElementById('adminLayout') || document.body;
+    const emojiPart = '[\\u2600-\\u27BF]|\\uD83C[\\uDF00-\\uDFFF]|\\uD83D[\\uDC00-\\uDEFF]|\\uD83E[\\uDD00-\\uDDFF]';
+    const emojiRegex = new RegExp(`((?:${emojiPart})\\uFE0F?(?:\\u200D(?:${emojiPart})\\uFE0F?)*)`, 'g');
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+            const parent = node.parentElement;
+            emojiRegex.lastIndex = 0;
+            if (!parent || !emojiRegex.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+            emojiRegex.lastIndex = 0;
+            if (parent.closest('script, style, input, textarea, select, .emoji-glyph')) {
+                return NodeFilter.FILTER_REJECT;
+            }
+            return NodeFilter.FILTER_ACCEPT;
+        }
+    });
+
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach(node => {
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        emojiRegex.lastIndex = 0;
+        node.nodeValue.replace(emojiRegex, (match, _emoji, index) => {
+            if (index > lastIndex) {
+                fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex, index)));
+            }
+            const span = document.createElement('span');
+            span.className = 'emoji-glyph';
+            span.textContent = match;
+            fragment.appendChild(span);
+            lastIndex = index + match.length;
+        });
+        if (lastIndex < node.nodeValue.length) {
+            fragment.appendChild(document.createTextNode(node.nodeValue.slice(lastIndex)));
+        }
+        node.parentNode.replaceChild(fragment, node);
+    });
+}
+
+function initEmojiLayoutGuard() {
+    const root = document.getElementById('adminLayout');
+    if (!root) return;
+    wrapDashboardEmojis(root);
+
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE) wrapDashboardEmojis(node);
+                if (node.nodeType === Node.TEXT_NODE && node.parentElement) wrapDashboardEmojis(node.parentElement);
+            });
+        });
+    });
+    observer.observe(root, { childList: true, subtree: true });
+}
+
+// ── INIT ───────────────────────────────────────────────────────
+// Apply saved theme on load
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.location.protocol === 'file:') {
+        alert('ATENCIÓN: Estás abriendo el archivo directamente. El panel administrativo REQUIERE ejecutarse mediante un servidor local (ej: Live Server en VS Code) para que Supabase funcione correctamente.');
+    }
+
+    initEmojiLayoutGuard();
+    applyTheme(STATE.theme);
+    
+    if (window.vitalStaysApi && window.vitalStaysApi.isConfigured()) {
+        try {
+            const session = await window.vitalStaysApi.getSession();
+            if (session && session.user) {
+                STATE.user = { email: session.user.email, name: session.user.email.split('@')[0] };
+                const role = await window.vitalStaysApi.getCurrentAdminRole();
+                if (role) {
+                    STATE.role = role;
+                    initDashboard();
+                }
+            }
+        } catch(e) {
+            console.error('No session active');
+        }
+    }
+});
+</script>
+
+<!-- External scripts - maintain compatibility with existing files -->
+<script src="script.js" onerror="console.warn('script.js no encontrado')"></script>
+</body>
+</html>
