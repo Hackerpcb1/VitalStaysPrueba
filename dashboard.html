@@ -1603,11 +1603,16 @@ function showPermissionLock(section) {
 
 // ── SIDEBAR MOBILE ─────────────────────────────────────────────
 function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isOpen = sidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('open', isOpen);
 }
 
 function closeSidebar() {
     document.getElementById('sidebar').classList.remove('open');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (overlay) overlay.classList.remove('open');
 }
 
 // ── THEME ──────────────────────────────────────────────────────
